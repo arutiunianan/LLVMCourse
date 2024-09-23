@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include <SDL2/SDL.h>
 
-const int SIM_X_SIZE = 512;
-const int SIM_Y_SIZE = 256;
-static int pixels[SIM_X_SIZE][SIM_Y_SIZE];
+#define SIM_X_SIZE 512
+#define SIM_Y_SIZE 256
 
 void simInit();
 void app();
+void simExit();
 
 void simFlush();
 void simPutPixel(int x, int y, int argb);
