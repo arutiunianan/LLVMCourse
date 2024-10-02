@@ -3,425 +3,371 @@ source_filename = "app.c"
 target datalayout = "e-m:o-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-apple-macosx11.0.0"
 
-@START = global i32 0, align 4
-@CONTINUE = global i32 1, align 4
-@__func__.countLivingNeighbors = private unnamed_addr constant [21 x i8] c"countLivingNeighbors\00", align 1
-@.str = private unnamed_addr constant [6 x i8] c"app.c\00", align 1
-@.str.1 = private unnamed_addr constant [25 x i8] c"0 <= x && x < SIM_X_SIZE\00", align 1
-@.str.2 = private unnamed_addr constant [25 x i8] c"0 <= y && y < SIM_Y_SIZE\00", align 1
-@pixels = common global [512 x [256 x i32]] zeroinitializer, align 16
-@__func__.updatePixel = private unnamed_addr constant [12 x i8] c"updatePixel\00", align 1
-
 ; Function Attrs: noinline nounwind optnone ssp uwtable
-define i32 @countLivingNeighbors(i32 %0, i32 %1) #0 {
-  %3 = alloca i32, align 4
+define i32 @countLivingNeighbors(i32 %0, i32 %1, i32* %2) #0 {
   %4 = alloca i32, align 4
   %5 = alloca i32, align 4
-  %6 = alloca i32, align 4
+  %6 = alloca i32*, align 8
   %7 = alloca i32, align 4
-  store i32 %0, i32* %3, align 4
-  store i32 %1, i32* %4, align 4
-  %8 = load i32, i32* %3, align 4
-  %9 = icmp sle i32 0, %8
-  br i1 %9, label %10, label %13
+  %8 = alloca i32, align 4
+  %9 = alloca i32, align 4
+  store i32 %0, i32* %4, align 4
+  store i32 %1, i32* %5, align 4
+  store i32* %2, i32** %6, align 8
+  store i32 0, i32* %7, align 4
+  %10 = load i32, i32* %4, align 4
+  %11 = sub nsw i32 %10, 1
+  store i32 %11, i32* %8, align 4
+  br label %12
 
-10:                                               ; preds = %2
-  %11 = load i32, i32* %3, align 4
-  %12 = icmp slt i32 %11, 512
-  br label %13
+12:                                               ; preds = %65, %3
+  %13 = load i32, i32* %8, align 4
+  %14 = load i32, i32* %4, align 4
+  %15 = add nsw i32 %14, 1
+  %16 = icmp sle i32 %13, %15
+  br i1 %16, label %17, label %68
 
-13:                                               ; preds = %10, %2
-  %14 = phi i1 [ false, %2 ], [ %12, %10 ]
-  %15 = xor i1 %14, true
-  %16 = zext i1 %15 to i32
-  %17 = sext i32 %16 to i64
-  %18 = icmp ne i64 %17, 0
-  br i1 %18, label %19, label %21
+17:                                               ; preds = %12
+  %18 = load i32, i32* %8, align 4
+  %19 = icmp slt i32 %18, 0
+  br i1 %19, label %23, label %20
 
-19:                                               ; preds = %13
-  call void @__assert_rtn(i8* getelementptr inbounds ([21 x i8], [21 x i8]* @__func__.countLivingNeighbors, i64 0, i64 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str, i64 0, i64 0), i32 9, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.1, i64 0, i64 0)) #3
-  unreachable
+20:                                               ; preds = %17
+  %21 = load i32, i32* %8, align 4
+  %22 = icmp sge i32 %21, 512
+  br i1 %22, label %23, label %24
 
-20:                                               ; No predecessors!
-  br label %22
+23:                                               ; preds = %20, %17
+  br label %65
 
-21:                                               ; preds = %13
-  br label %22
+24:                                               ; preds = %20
+  %25 = load i32, i32* %5, align 4
+  %26 = sub nsw i32 %25, 1
+  store i32 %26, i32* %9, align 4
+  br label %27
 
-22:                                               ; preds = %21, %20
-  %23 = load i32, i32* %4, align 4
-  %24 = icmp sle i32 0, %23
-  br i1 %24, label %25, label %28
+27:                                               ; preds = %61, %24
+  %28 = load i32, i32* %9, align 4
+  %29 = load i32, i32* %5, align 4
+  %30 = add nsw i32 %29, 1
+  %31 = icmp sle i32 %28, %30
+  br i1 %31, label %32, label %64
 
-25:                                               ; preds = %22
-  %26 = load i32, i32* %4, align 4
-  %27 = icmp slt i32 %26, 256
-  br label %28
+32:                                               ; preds = %27
+  %33 = load i32, i32* %9, align 4
+  %34 = icmp slt i32 %33, 0
+  br i1 %34, label %46, label %35
 
-28:                                               ; preds = %25, %22
-  %29 = phi i1 [ false, %22 ], [ %27, %25 ]
-  %30 = xor i1 %29, true
-  %31 = zext i1 %30 to i32
-  %32 = sext i32 %31 to i64
-  %33 = icmp ne i64 %32, 0
-  br i1 %33, label %34, label %36
+35:                                               ; preds = %32
+  %36 = load i32, i32* %9, align 4
+  %37 = icmp sge i32 %36, 256
+  br i1 %37, label %46, label %38
 
-34:                                               ; preds = %28
-  call void @__assert_rtn(i8* getelementptr inbounds ([21 x i8], [21 x i8]* @__func__.countLivingNeighbors, i64 0, i64 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str, i64 0, i64 0), i32 10, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.2, i64 0, i64 0)) #3
-  unreachable
+38:                                               ; preds = %35
+  %39 = load i32, i32* %8, align 4
+  %40 = load i32, i32* %4, align 4
+  %41 = icmp eq i32 %39, %40
+  br i1 %41, label %42, label %47
 
-35:                                               ; No predecessors!
-  br label %37
+42:                                               ; preds = %38
+  %43 = load i32, i32* %9, align 4
+  %44 = load i32, i32* %5, align 4
+  %45 = icmp eq i32 %43, %44
+  br i1 %45, label %46, label %47
 
-36:                                               ; preds = %28
-  br label %37
+46:                                               ; preds = %42, %35, %32
+  br label %61
 
-37:                                               ; preds = %36, %35
-  store i32 0, i32* %5, align 4
-  %38 = load i32, i32* %3, align 4
-  %39 = sub nsw i32 %38, 1
-  store i32 %39, i32* %6, align 4
-  br label %40
+47:                                               ; preds = %42, %38
+  %48 = load i32*, i32** %6, align 8
+  %49 = load i32, i32* %8, align 4
+  %50 = load i32, i32* %9, align 4
+  %51 = mul nsw i32 %50, 512
+  %52 = add nsw i32 %49, %51
+  %53 = sext i32 %52 to i64
+  %54 = getelementptr inbounds i32, i32* %48, i64 %53
+  %55 = load i32, i32* %54, align 4
+  %56 = icmp ne i32 %55, 0
+  br i1 %56, label %57, label %60
 
-40:                                               ; preds = %93, %37
-  %41 = load i32, i32* %6, align 4
-  %42 = load i32, i32* %3, align 4
-  %43 = add nsw i32 %42, 2
-  %44 = icmp slt i32 %41, %43
-  br i1 %44, label %45, label %96
+57:                                               ; preds = %47
+  %58 = load i32, i32* %7, align 4
+  %59 = add nsw i32 %58, 1
+  store i32 %59, i32* %7, align 4
+  br label %60
 
-45:                                               ; preds = %40
-  %46 = load i32, i32* %6, align 4
-  %47 = icmp slt i32 %46, 0
-  br i1 %47, label %51, label %48
+60:                                               ; preds = %57, %47
+  br label %61
 
-48:                                               ; preds = %45
-  %49 = load i32, i32* %6, align 4
-  %50 = icmp sge i32 %49, 512
-  br i1 %50, label %51, label %52
+61:                                               ; preds = %60, %46
+  %62 = load i32, i32* %9, align 4
+  %63 = add nsw i32 %62, 1
+  store i32 %63, i32* %9, align 4
+  br label %27, !llvm.loop !4
 
-51:                                               ; preds = %48, %45
-  br label %93
+64:                                               ; preds = %27
+  br label %65
 
-52:                                               ; preds = %48
-  %53 = load i32, i32* %4, align 4
-  %54 = sub nsw i32 %53, 1
-  store i32 %54, i32* %7, align 4
-  br label %55
+65:                                               ; preds = %64, %23
+  %66 = load i32, i32* %8, align 4
+  %67 = add nsw i32 %66, 1
+  store i32 %67, i32* %8, align 4
+  br label %12, !llvm.loop !6
 
-55:                                               ; preds = %89, %52
-  %56 = load i32, i32* %7, align 4
-  %57 = load i32, i32* %4, align 4
-  %58 = add nsw i32 %57, 2
-  %59 = icmp slt i32 %56, %58
-  br i1 %59, label %60, label %92
-
-60:                                               ; preds = %55
-  %61 = load i32, i32* %7, align 4
-  %62 = icmp slt i32 %61, 0
-  br i1 %62, label %66, label %63
-
-63:                                               ; preds = %60
-  %64 = load i32, i32* %7, align 4
-  %65 = icmp sge i32 %64, 256
-  br i1 %65, label %66, label %67
-
-66:                                               ; preds = %63, %60
-  br label %89
-
-67:                                               ; preds = %63
-  %68 = load i32, i32* %6, align 4
-  %69 = load i32, i32* %3, align 4
-  %70 = icmp eq i32 %68, %69
-  br i1 %70, label %71, label %76
-
-71:                                               ; preds = %67
-  %72 = load i32, i32* %7, align 4
-  %73 = load i32, i32* %4, align 4
-  %74 = icmp eq i32 %72, %73
-  br i1 %74, label %75, label %76
-
-75:                                               ; preds = %71
-  br label %89
-
-76:                                               ; preds = %71, %67
-  %77 = load i32, i32* %6, align 4
-  %78 = sext i32 %77 to i64
-  %79 = getelementptr inbounds [512 x [256 x i32]], [512 x [256 x i32]]* @pixels, i64 0, i64 %78
-  %80 = load i32, i32* %7, align 4
-  %81 = sext i32 %80 to i64
-  %82 = getelementptr inbounds [256 x i32], [256 x i32]* %79, i64 0, i64 %81
-  %83 = load i32, i32* %82, align 4
-  %84 = icmp eq i32 %83, 1
-  br i1 %84, label %85, label %88
-
-85:                                               ; preds = %76
-  %86 = load i32, i32* %5, align 4
-  %87 = add nsw i32 %86, 1
-  store i32 %87, i32* %5, align 4
-  br label %88
-
-88:                                               ; preds = %85, %76
-  br label %89
-
-89:                                               ; preds = %88, %75, %66
-  %90 = load i32, i32* %7, align 4
-  %91 = add nsw i32 %90, 1
-  store i32 %91, i32* %7, align 4
-  br label %55, !llvm.loop !4
-
-92:                                               ; preds = %55
-  br label %93
-
-93:                                               ; preds = %92, %51
-  %94 = load i32, i32* %6, align 4
-  %95 = add nsw i32 %94, 1
-  store i32 %95, i32* %6, align 4
-  br label %40, !llvm.loop !6
-
-96:                                               ; preds = %40
-  %97 = load i32, i32* %5, align 4
-  ret i32 %97
+68:                                               ; preds = %12
+  %69 = load i32, i32* %7, align 4
+  ret i32 %69
 }
 
-; Function Attrs: cold noreturn
-declare void @__assert_rtn(i8*, i8*, i32, i8*) #1
-
 ; Function Attrs: noinline nounwind optnone ssp uwtable
-define void @updatePixel(i32 %0, i32 %1) #0 {
-  %3 = alloca i32, align 4
-  %4 = alloca i32, align 4
+define void @updatePixel(i32 %0, i32 %1, i32* %2, i32* %3) #0 {
   %5 = alloca i32, align 4
-  store i32 %0, i32* %3, align 4
-  store i32 %1, i32* %4, align 4
-  %6 = load i32, i32* %3, align 4
-  %7 = icmp sle i32 0, %6
-  br i1 %7, label %8, label %11
+  %6 = alloca i32, align 4
+  %7 = alloca i32*, align 8
+  %8 = alloca i32*, align 8
+  %9 = alloca i32, align 4
+  store i32 %0, i32* %5, align 4
+  store i32 %1, i32* %6, align 4
+  store i32* %2, i32** %7, align 8
+  store i32* %3, i32** %8, align 8
+  %10 = load i32, i32* %5, align 4
+  %11 = load i32, i32* %6, align 4
+  %12 = load i32*, i32** %7, align 8
+  %13 = call i32 @countLivingNeighbors(i32 %10, i32 %11, i32* %12)
+  store i32 %13, i32* %9, align 4
+  %14 = load i32*, i32** %7, align 8
+  %15 = load i32, i32* %5, align 4
+  %16 = load i32, i32* %6, align 4
+  %17 = mul nsw i32 %16, 512
+  %18 = add nsw i32 %15, %17
+  %19 = sext i32 %18 to i64
+  %20 = getelementptr inbounds i32, i32* %14, i64 %19
+  %21 = load i32, i32* %20, align 4
+  %22 = icmp eq i32 %21, 1
+  br i1 %22, label %23, label %40
 
-8:                                                ; preds = %2
-  %9 = load i32, i32* %3, align 4
-  %10 = icmp slt i32 %9, 512
-  br label %11
+23:                                               ; preds = %4
+  %24 = load i32, i32* %9, align 4
+  %25 = icmp ne i32 %24, 2
+  br i1 %25, label %26, label %29
 
-11:                                               ; preds = %8, %2
-  %12 = phi i1 [ false, %2 ], [ %10, %8 ]
-  %13 = xor i1 %12, true
-  %14 = zext i1 %13 to i32
-  %15 = sext i32 %14 to i64
-  %16 = icmp ne i64 %15, 0
-  br i1 %16, label %17, label %19
+26:                                               ; preds = %23
+  %27 = load i32, i32* %9, align 4
+  %28 = icmp ne i32 %27, 3
+  br label %29
 
-17:                                               ; preds = %11
-  call void @__assert_rtn(i8* getelementptr inbounds ([12 x i8], [12 x i8]* @__func__.updatePixel, i64 0, i64 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str, i64 0, i64 0), i32 36, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.1, i64 0, i64 0)) #3
-  unreachable
+29:                                               ; preds = %26, %23
+  %30 = phi i1 [ false, %23 ], [ %28, %26 ]
+  %31 = zext i1 %30 to i64
+  %32 = select i1 %30, i32 0, i32 1
+  %33 = load i32*, i32** %8, align 8
+  %34 = load i32, i32* %5, align 4
+  %35 = load i32, i32* %6, align 4
+  %36 = mul nsw i32 %35, 512
+  %37 = add nsw i32 %34, %36
+  %38 = sext i32 %37 to i64
+  %39 = getelementptr inbounds i32, i32* %33, i64 %38
+  store i32 %32, i32* %39, align 4
+  br label %52
 
-18:                                               ; No predecessors!
-  br label %20
+40:                                               ; preds = %4
+  %41 = load i32, i32* %9, align 4
+  %42 = icmp ne i32 %41, 3
+  %43 = zext i1 %42 to i64
+  %44 = select i1 %42, i32 0, i32 1
+  %45 = load i32*, i32** %8, align 8
+  %46 = load i32, i32* %5, align 4
+  %47 = load i32, i32* %6, align 4
+  %48 = mul nsw i32 %47, 512
+  %49 = add nsw i32 %46, %48
+  %50 = sext i32 %49 to i64
+  %51 = getelementptr inbounds i32, i32* %45, i64 %50
+  store i32 %44, i32* %51, align 4
+  br label %52
 
-19:                                               ; preds = %11
-  br label %20
-
-20:                                               ; preds = %19, %18
-  %21 = load i32, i32* %4, align 4
-  %22 = icmp sle i32 0, %21
-  br i1 %22, label %23, label %26
-
-23:                                               ; preds = %20
-  %24 = load i32, i32* %4, align 4
-  %25 = icmp slt i32 %24, 256
-  br label %26
-
-26:                                               ; preds = %23, %20
-  %27 = phi i1 [ false, %20 ], [ %25, %23 ]
-  %28 = xor i1 %27, true
-  %29 = zext i1 %28 to i32
-  %30 = sext i32 %29 to i64
-  %31 = icmp ne i64 %30, 0
-  br i1 %31, label %32, label %34
-
-32:                                               ; preds = %26
-  call void @__assert_rtn(i8* getelementptr inbounds ([12 x i8], [12 x i8]* @__func__.updatePixel, i64 0, i64 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str, i64 0, i64 0), i32 37, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.2, i64 0, i64 0)) #3
-  unreachable
-
-33:                                               ; No predecessors!
-  br label %35
-
-34:                                               ; preds = %26
-  br label %35
-
-35:                                               ; preds = %34, %33
-  %36 = load i32, i32* %3, align 4
-  %37 = load i32, i32* %4, align 4
-  %38 = call i32 @countLivingNeighbors(i32 %36, i32 %37)
-  store i32 %38, i32* %5, align 4
-  %39 = load i32, i32* %3, align 4
-  %40 = sext i32 %39 to i64
-  %41 = getelementptr inbounds [512 x [256 x i32]], [512 x [256 x i32]]* @pixels, i64 0, i64 %40
-  %42 = load i32, i32* %4, align 4
-  %43 = sext i32 %42 to i64
-  %44 = getelementptr inbounds [256 x i32], [256 x i32]* %41, i64 0, i64 %43
-  %45 = load i32, i32* %44, align 4
-  %46 = icmp eq i32 %45, 0
-  br i1 %46, label %47, label %58
-
-47:                                               ; preds = %35
-  %48 = load i32, i32* %5, align 4
-  %49 = icmp eq i32 %48, 3
-  br i1 %49, label %50, label %57
-
-50:                                               ; preds = %47
-  %51 = load i32, i32* %3, align 4
-  %52 = sext i32 %51 to i64
-  %53 = getelementptr inbounds [512 x [256 x i32]], [512 x [256 x i32]]* @pixels, i64 0, i64 %52
-  %54 = load i32, i32* %4, align 4
-  %55 = sext i32 %54 to i64
-  %56 = getelementptr inbounds [256 x i32], [256 x i32]* %53, i64 0, i64 %55
-  store i32 1, i32* %56, align 4
-  br label %57
-
-57:                                               ; preds = %50, %47
-  br label %71
-
-58:                                               ; preds = %35
-  %59 = load i32, i32* %5, align 4
-  %60 = icmp ne i32 %59, 2
-  br i1 %60, label %64, label %61
-
-61:                                               ; preds = %58
-  %62 = load i32, i32* %5, align 4
-  %63 = icmp ne i32 %62, 3
-  br i1 %63, label %64, label %71
-
-64:                                               ; preds = %61, %58
-  %65 = load i32, i32* %3, align 4
-  %66 = sext i32 %65 to i64
-  %67 = getelementptr inbounds [512 x [256 x i32]], [512 x [256 x i32]]* @pixels, i64 0, i64 %66
-  %68 = load i32, i32* %4, align 4
-  %69 = sext i32 %68 to i64
-  %70 = getelementptr inbounds [256 x i32], [256 x i32]* %67, i64 0, i64 %69
-  store i32 0, i32* %70, align 4
-  br label %71
-
-71:                                               ; preds = %57, %64, %61
+52:                                               ; preds = %40, %29
   ret void
 }
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
+define void @swapPixels(i32** %0, i32** %1) #0 {
+  %3 = alloca i32**, align 8
+  %4 = alloca i32**, align 8
+  %5 = alloca i32*, align 8
+  store i32** %0, i32*** %3, align 8
+  store i32** %1, i32*** %4, align 8
+  %6 = load i32**, i32*** %3, align 8
+  %7 = load i32*, i32** %6, align 8
+  store i32* %7, i32** %5, align 8
+  %8 = load i32**, i32*** %4, align 8
+  %9 = load i32*, i32** %8, align 8
+  %10 = load i32**, i32*** %3, align 8
+  store i32* %9, i32** %10, align 8
+  %11 = load i32*, i32** %5, align 8
+  %12 = load i32**, i32*** %4, align 8
+  store i32* %11, i32** %12, align 8
+  ret void
+}
+
+; Function Attrs: noinline nounwind optnone ssp uwtable
+define void @gameOfLife(i32* %0, i32* %1) #0 {
+  %3 = alloca i32*, align 8
+  %4 = alloca i32*, align 8
+  %5 = alloca i32, align 4
+  %6 = alloca i32, align 4
+  store i32* %0, i32** %3, align 8
+  store i32* %1, i32** %4, align 8
+  br label %7
+
+7:                                                ; preds = %2, %40
+  store i32 0, i32* %5, align 4
+  br label %8
+
+8:                                                ; preds = %37, %7
+  %9 = load i32, i32* %5, align 4
+  %10 = icmp slt i32 %9, 512
+  br i1 %10, label %11, label %40
+
+11:                                               ; preds = %8
+  store i32 0, i32* %6, align 4
+  br label %12
+
+12:                                               ; preds = %33, %11
+  %13 = load i32, i32* %6, align 4
+  %14 = icmp slt i32 %13, 256
+  br i1 %14, label %15, label %36
+
+15:                                               ; preds = %12
+  %16 = load i32, i32* %5, align 4
+  %17 = load i32, i32* %6, align 4
+  %18 = load i32*, i32** %3, align 8
+  %19 = load i32, i32* %5, align 4
+  %20 = load i32, i32* %6, align 4
+  %21 = mul nsw i32 %20, 512
+  %22 = add nsw i32 %19, %21
+  %23 = sext i32 %22 to i64
+  %24 = getelementptr inbounds i32, i32* %18, i64 %23
+  %25 = load i32, i32* %24, align 4
+  %26 = icmp ne i32 %25, 0
+  %27 = zext i1 %26 to i64
+  %28 = select i1 %26, i32 16711680, i32 -16777216
+  call void @simPutPixel(i32 %16, i32 %17, i32 %28)
+  %29 = load i32, i32* %5, align 4
+  %30 = load i32, i32* %6, align 4
+  %31 = load i32*, i32** %3, align 8
+  %32 = load i32*, i32** %4, align 8
+  call void @updatePixel(i32 %29, i32 %30, i32* %31, i32* %32)
+  br label %33
+
+33:                                               ; preds = %15
+  %34 = load i32, i32* %6, align 4
+  %35 = add nsw i32 %34, 1
+  store i32 %35, i32* %6, align 4
+  br label %12, !llvm.loop !7
+
+36:                                               ; preds = %12
+  br label %37
+
+37:                                               ; preds = %36
+  %38 = load i32, i32* %5, align 4
+  %39 = add nsw i32 %38, 1
+  store i32 %39, i32* %5, align 4
+  br label %8, !llvm.loop !8
+
+40:                                               ; preds = %8
+  call void @swapPixels(i32** %3, i32** %4)
+  call void (...) @simFlush()
+  br label %7
+}
+
+declare void @simPutPixel(i32, i32, i32) #1
+
+declare void @simFlush(...) #1
+
+; Function Attrs: noinline nounwind optnone ssp uwtable
 define void @app() #0 {
-  %1 = alloca i32, align 4
-  %2 = alloca i32, align 4
+  %1 = alloca [512 x [256 x i32]], align 16
+  %2 = alloca [512 x [256 x i32]], align 16
   %3 = alloca i32, align 4
   %4 = alloca i32, align 4
-  %5 = load i32, i32* @START, align 4
-  store i32 %5, i32* %1, align 4
-  store i32 -16777216, i32* %2, align 4
-  br label %6
-
-6:                                                ; preds = %0, %55
+  %5 = bitcast [512 x [256 x i32]]* %1 to i8*
+  call void @llvm.memset.p0i8.i64(i8* align 16 %5, i8 0, i64 524288, i1 false)
+  %6 = bitcast [512 x [256 x i32]]* %2 to i8*
+  call void @llvm.memset.p0i8.i64(i8* align 16 %6, i8 0, i64 524288, i1 false)
   store i32 0, i32* %3, align 4
   br label %7
 
-7:                                                ; preds = %52, %6
+7:                                                ; preds = %39, %0
   %8 = load i32, i32* %3, align 4
   %9 = icmp slt i32 %8, 512
-  br i1 %9, label %10, label %55
+  br i1 %9, label %10, label %42
 
 10:                                               ; preds = %7
   store i32 0, i32* %4, align 4
   br label %11
 
-11:                                               ; preds = %48, %10
+11:                                               ; preds = %35, %10
   %12 = load i32, i32* %4, align 4
   %13 = icmp slt i32 %12, 256
-  br i1 %13, label %14, label %51
+  br i1 %13, label %14, label %38
 
 14:                                               ; preds = %11
-  %15 = load i32, i32* %1, align 4
-  %16 = load i32, i32* @START, align 4
-  %17 = icmp eq i32 %15, %16
-  br i1 %17, label %18, label %26
+  %15 = call i32 (...) @simRand()
+  %16 = load i32, i32* %3, align 4
+  %17 = sext i32 %16 to i64
+  %18 = getelementptr inbounds [512 x [256 x i32]], [512 x [256 x i32]]* %1, i64 0, i64 %17
+  %19 = load i32, i32* %4, align 4
+  %20 = sext i32 %19 to i64
+  %21 = getelementptr inbounds [256 x i32], [256 x i32]* %18, i64 0, i64 %20
+  store i32 %15, i32* %21, align 4
+  %22 = load i32, i32* %3, align 4
+  %23 = sext i32 %22 to i64
+  %24 = getelementptr inbounds [512 x [256 x i32]], [512 x [256 x i32]]* %1, i64 0, i64 %23
+  %25 = load i32, i32* %4, align 4
+  %26 = sext i32 %25 to i64
+  %27 = getelementptr inbounds [256 x i32], [256 x i32]* %24, i64 0, i64 %26
+  %28 = load i32, i32* %27, align 4
+  %29 = load i32, i32* %3, align 4
+  %30 = sext i32 %29 to i64
+  %31 = getelementptr inbounds [512 x [256 x i32]], [512 x [256 x i32]]* %2, i64 0, i64 %30
+  %32 = load i32, i32* %4, align 4
+  %33 = sext i32 %32 to i64
+  %34 = getelementptr inbounds [256 x i32], [256 x i32]* %31, i64 0, i64 %33
+  store i32 %28, i32* %34, align 4
+  br label %35
 
-18:                                               ; preds = %14
-  %19 = call i32 (...) @simRand()
-  %20 = load i32, i32* %3, align 4
-  %21 = sext i32 %20 to i64
-  %22 = getelementptr inbounds [512 x [256 x i32]], [512 x [256 x i32]]* @pixels, i64 0, i64 %21
-  %23 = load i32, i32* %4, align 4
-  %24 = sext i32 %23 to i64
-  %25 = getelementptr inbounds [256 x i32], [256 x i32]* %22, i64 0, i64 %24
-  store i32 %19, i32* %25, align 4
-  br label %26
+35:                                               ; preds = %14
+  %36 = load i32, i32* %4, align 4
+  %37 = add nsw i32 %36, 1
+  store i32 %37, i32* %4, align 4
+  br label %11, !llvm.loop !9
 
-26:                                               ; preds = %18, %14
-  %27 = load i32, i32* %3, align 4
-  %28 = sext i32 %27 to i64
-  %29 = getelementptr inbounds [512 x [256 x i32]], [512 x [256 x i32]]* @pixels, i64 0, i64 %28
-  %30 = load i32, i32* %4, align 4
-  %31 = sext i32 %30 to i64
-  %32 = getelementptr inbounds [256 x i32], [256 x i32]* %29, i64 0, i64 %31
-  %33 = load i32, i32* %32, align 4
-  %34 = icmp eq i32 %33, 1
-  br i1 %34, label %35, label %36
+38:                                               ; preds = %11
+  br label %39
 
-35:                                               ; preds = %26
-  store i32 16711680, i32* %2, align 4
-  br label %37
+39:                                               ; preds = %38
+  %40 = load i32, i32* %3, align 4
+  %41 = add nsw i32 %40, 1
+  store i32 %41, i32* %3, align 4
+  br label %7, !llvm.loop !10
 
-36:                                               ; preds = %26
-  store i32 -16777216, i32* %2, align 4
-  br label %37
-
-37:                                               ; preds = %36, %35
-  %38 = load i32, i32* %3, align 4
-  %39 = load i32, i32* %4, align 4
-  %40 = load i32, i32* %2, align 4
-  call void @simPutPixel(i32 %38, i32 %39, i32 %40)
-  %41 = load i32, i32* %1, align 4
-  %42 = load i32, i32* @CONTINUE, align 4
-  %43 = icmp eq i32 %41, %42
-  br i1 %43, label %44, label %47
-
-44:                                               ; preds = %37
-  %45 = load i32, i32* %3, align 4
-  %46 = load i32, i32* %4, align 4
-  call void @updatePixel(i32 %45, i32 %46)
-  br label %47
-
-47:                                               ; preds = %44, %37
-  br label %48
-
-48:                                               ; preds = %47
-  %49 = load i32, i32* %4, align 4
-  %50 = add nsw i32 %49, 1
-  store i32 %50, i32* %4, align 4
-  br label %11, !llvm.loop !7
-
-51:                                               ; preds = %11
-  br label %52
-
-52:                                               ; preds = %51
-  %53 = load i32, i32* %3, align 4
-  %54 = add nsw i32 %53, 1
-  store i32 %54, i32* %3, align 4
-  br label %7, !llvm.loop !8
-
-55:                                               ; preds = %7
-  %56 = load i32, i32* @CONTINUE, align 4
-  store i32 %56, i32* %1, align 4
-  call void (...) @simFlush()
-  br label %6
+42:                                               ; preds = %7
+  %43 = getelementptr inbounds [512 x [256 x i32]], [512 x [256 x i32]]* %1, i64 0, i64 0
+  %44 = bitcast [256 x i32]* %43 to i32*
+  %45 = getelementptr inbounds [512 x [256 x i32]], [512 x [256 x i32]]* %2, i64 0, i64 0
+  %46 = bitcast [256 x i32]* %45 to i32*
+  call void @gameOfLife(i32* %44, i32* %46)
+  ret void
 }
 
-declare i32 @simRand(...) #2
+; Function Attrs: argmemonly nofree nosync nounwind willreturn writeonly
+declare void @llvm.memset.p0i8.i64(i8* nocapture writeonly, i8, i64, i1 immarg) #2
 
-declare void @simPutPixel(i32, i32, i32) #2
-
-declare void @simFlush(...) #2
+declare i32 @simRand(...) #1
 
 attributes #0 = { noinline nounwind optnone ssp uwtable "darwin-stkchk-strong-link" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "min-legal-vector-width"="0" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="true" "probe-stack"="___chkstk_darwin" "stack-protector-buffer-size"="8" "target-cpu"="penryn" "target-features"="+cx16,+cx8,+fxsr,+mmx,+sahf,+sse,+sse2,+sse3,+sse4.1,+ssse3,+x87" "tune-cpu"="generic" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { cold noreturn "darwin-stkchk-strong-link" "disable-tail-calls"="true" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="true" "probe-stack"="___chkstk_darwin" "stack-protector-buffer-size"="8" "target-cpu"="penryn" "target-features"="+cx16,+cx8,+fxsr,+mmx,+sahf,+sse,+sse2,+sse3,+sse4.1,+ssse3,+x87" "tune-cpu"="generic" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #2 = { "darwin-stkchk-strong-link" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="true" "probe-stack"="___chkstk_darwin" "stack-protector-buffer-size"="8" "target-cpu"="penryn" "target-features"="+cx16,+cx8,+fxsr,+mmx,+sahf,+sse,+sse2,+sse3,+sse4.1,+ssse3,+x87" "tune-cpu"="generic" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #3 = { cold noreturn }
+attributes #1 = { "darwin-stkchk-strong-link" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="true" "probe-stack"="___chkstk_darwin" "stack-protector-buffer-size"="8" "target-cpu"="penryn" "target-features"="+cx16,+cx8,+fxsr,+mmx,+sahf,+sse,+sse2,+sse3,+sse4.1,+ssse3,+x87" "tune-cpu"="generic" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #2 = { argmemonly nofree nosync nounwind willreturn writeonly }
 
 !llvm.module.flags = !{!0, !1, !2}
 !llvm.ident = !{!3}
@@ -435,3 +381,5 @@ attributes #3 = { cold noreturn }
 !6 = distinct !{!6, !5}
 !7 = distinct !{!7, !5}
 !8 = distinct !{!8, !5}
+!9 = distinct !{!9, !5}
+!10 = distinct !{!10, !5}
