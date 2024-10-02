@@ -4,6 +4,6 @@ int main(void) {
     
     simInit();
     app();
-    //simExit();
+    simExit();
     return 0;
 }

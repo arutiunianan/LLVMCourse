@@ -1,3 +1,8 @@
+#include <stdlib.h>
+#include <assert.h>
+#include <SDL2/SDL.h>
+#include <time.h>
+
 #include "sim.h"
 
 #define FRAME_TICKS 50
@@ -17,10 +22,23 @@ void simInit()
     simFlush();
 }
 
+void simExit()
+{
+    SDL_Event event;
+    while (1)
+    {
+        if (SDL_PollEvent(&event) && event.type == SDL_QUIT)
+            break;
+    }
+    SDL_DestroyRenderer(Renderer);
+    SDL_DestroyWindow(Window);
+    SDL_Quit();
+}
+
 void simFlush()
 {
     SDL_PumpEvents();
-    assert(SDL_TRUE != SDL_HasEvent(SDL_QUIT));
+    assert(SDL_TRUE != SDL_HasEvent(SDL_QUIT) && "User-requested quit");
     Uint32 cur_ticks = SDL_GetTicks() - Ticks;
     if (cur_ticks < FRAME_TICKS)
     {
@@ -31,8 +49,8 @@ void simFlush()
 
 void simPutPixel(int x, int y, int argb)
 {
-    assert(0 <= x && x < SIM_X_SIZE);
-    assert(0 <= y && y < SIM_Y_SIZE);
+    assert(0 <= x && x < SIM_X_SIZE && "Out of range");
+    assert(0 <= y && y < SIM_Y_SIZE && "Out of range");
     Uint8 a = argb >> 24;
     Uint8 r = (argb >> 16) & 0xFF;
     Uint8 g = (argb >> 8) & 0xFF;
@@ -42,20 +60,7 @@ void simPutPixel(int x, int y, int argb)
     Ticks = SDL_GetTicks();
 }
 
-void simExit()
-{
-    SDL_Event event;
-    while (1) {
-        if (SDL_PollEvent(&event) && event.type == SDL_QUIT) {
-            break;
-        }
-    }
-    SDL_DestroyRenderer(Renderer);
-    SDL_DestroyWindow(Window);
-    SDL_Quit();
-}
-
 int simRand()
 {
-    return (rand() % 3) % 2;
+    return rand() % 3 % 2;
 }

@@ -1,80 +1,65 @@
 #include "sim.h"
 
-int START    = 0;
-int CONTINUE = 1;
-
-int pixels[SIM_X_SIZE][SIM_Y_SIZE];
-
-int countLivingNeighbors(int x, int y) {
-    assert(0 <= x && x < SIM_X_SIZE);
-    assert(0 <= y && y < SIM_Y_SIZE);
+int countLivingNeighbors(int x, int y, int* pixels) {
     int counter = 0;
 
-    for(int i = x - 1; i < x + 2; i++) {
-        if(i < 0 || i >= SIM_X_SIZE) {
+    for (int i = x - 1; i <= x + 1; i++) {
+        if (i < 0 || i >= SIM_X_SIZE) {
             continue;
         }
-        for(int j = y - 1; j < y + 2; j++) {
-            if(j < 0 || j >= SIM_Y_SIZE) {
+
+        for (int j = y - 1; j <= y + 1; j++) {
+            if (j < 0 || j >= SIM_Y_SIZE || (i == x && j == y)) {
                 continue;
             }
 
-            if(i == x && j == y) {
-                continue;
-            }
-
-            if(pixels[i][j] == 1) {
+            if (pixels[i + j * SIM_X_SIZE]) {
                 counter++;
             }
         }
     }
-    
     return counter;
 }
 
-void updatePixel(int x, int y) {
-    assert(0 <= x && x < SIM_X_SIZE);
-    assert(0 <= y && y < SIM_Y_SIZE);
-    int counterLivingNeighbors = countLivingNeighbors(x, y);
-    if(pixels[x][y] == 0) {
-        if(counterLivingNeighbors == 3) {
-            pixels[x][y] = 1;
-        }
-        return;
-    }
+void updatePixel(int x, int y, int* pixels, int* new_pixels) {
+    int counterLivingNeighbors = countLivingNeighbors(x, y, pixels);
     
-    if(counterLivingNeighbors != 2 || counterLivingNeighbors != 3) {
-        pixels[x][y] = 0;
+    if (pixels[x + y * SIM_X_SIZE] == 1) {
+        new_pixels[x + y * SIM_X_SIZE] = (counterLivingNeighbors != 2 && counterLivingNeighbors != 3) ? 0 : 1;
+    } 
+    else {
+        new_pixels[x + y * SIM_X_SIZE] = (counterLivingNeighbors != 3) ? 0 : 1;
+    }
+}
+
+void swapPixels(int** old_pixels, int** new_pixels) {
+    int* buf = *old_pixels;
+    *old_pixels = *new_pixels;
+    *new_pixels = buf;
+}
+
+void gameOfLife(int* pixels, int* new_pixels) {
+    while (1) {
+        for (int x = 0; x < SIM_X_SIZE; x++) {
+            for (int y = 0; y < SIM_Y_SIZE; y++) {
+                simPutPixel(x, y, pixels[x + y * SIM_X_SIZE] ? 0xFF0000 : 0xFF000000);
+                updatePixel(x, y, pixels, new_pixels);
+            }
+        }
+        swapPixels(&pixels, &new_pixels);
+        simFlush();
     }
 }
 
 void app() {
-    assert(pixels != NULL);
-    int flag = START;
-    int color = 0xFF000000;
+    int pixels[SIM_X_SIZE][SIM_Y_SIZE]     = {0};
+    int new_pixels[SIM_X_SIZE][SIM_Y_SIZE] = {0};
 
-    while(1) {
-        for(int x = 0; x < SIM_X_SIZE; ++x) {
-            for(int y = 0; y < SIM_Y_SIZE; ++y) {
-                if(flag == START) {
-                    pixels[x][y] = simRand();
-                }
-
-                if(pixels[x][y] == 1) {
-                    color = 0xFF0000;
-                }
-                else {
-                    color = 0xFF000000;
-                }
-
-                simPutPixel(x, y, color);
-                if(flag == CONTINUE) {
-                    updatePixel(x,y);
-                }
-            }
+    for(int x = 0; x < SIM_X_SIZE; ++x) {
+        for(int y = 0; y < SIM_Y_SIZE; ++y) {
+            pixels[x][y] = simRand();
+            new_pixels[x][y] = pixels[x][y];
         }
-        flag = CONTINUE;
-        simFlush();
-
     }
+    gameOfLife(pixels, new_pixels);
 }
