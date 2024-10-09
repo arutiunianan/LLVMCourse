@@ -15,9 +15,7 @@ struct MyPass : public PassInfoMixin<MyPass> {
                 }
                 for (auto& U : I.uses()) {
                     User* user = U.getUser();
-                    if(Instruction* userinst = cast<Instruction>(user)) {
-                      //unsigned opcode = userinst->getOpcode();
-                      //std::string opcodeName = inst->getOpcodeName(opcode);
+                    if(Instruction* userinst = dyn_cast<Instruction>(user)) {
                       outs() << I.getOpcodeName() << " -> " << userinst->getOpcodeName() << "\n";
                     }
                 }

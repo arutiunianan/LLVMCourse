@@ -1,385 +1,344 @@
 ; ModuleID = 'app.c'
 source_filename = "app.c"
-target datalayout = "e-m:o-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128"
-target triple = "x86_64-apple-macosx11.0.0"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-pc-linux-gnu"
 
-; Function Attrs: noinline nounwind optnone ssp uwtable
-define i32 @countLivingNeighbors(i32 %0, i32 %1, i32* %2) #0 {
-  %4 = alloca i32, align 4
-  %5 = alloca i32, align 4
-  %6 = alloca i32*, align 8
-  %7 = alloca i32, align 4
-  %8 = alloca i32, align 4
-  %9 = alloca i32, align 4
-  store i32 %0, i32* %4, align 4
-  store i32 %1, i32* %5, align 4
-  store i32* %2, i32** %6, align 8
-  store i32 0, i32* %7, align 4
-  %10 = load i32, i32* %4, align 4
-  %11 = sub nsw i32 %10, 1
-  store i32 %11, i32* %8, align 4
-  br label %12
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: read) uwtable
+define dso_local i32 @countLivingNeighbors(i32 noundef %0, i32 noundef %1, ptr nocapture noundef readonly %2) local_unnamed_addr #0 {
+  %4 = add nsw i32 %0, -1
+  %5 = add nsw i32 %1, -1
+  %6 = icmp ugt i32 %4, 511
+  br i1 %6, label %44, label %9
 
-12:                                               ; preds = %65, %3
-  %13 = load i32, i32* %8, align 4
-  %14 = load i32, i32* %4, align 4
-  %15 = add nsw i32 %14, 1
-  %16 = icmp sle i32 %13, %15
-  br i1 %16, label %17, label %68
+7:                                                ; preds = %102, %98, %71
+  %8 = phi i32 [ %72, %71 ], [ %99, %98 ], [ %110, %102 ]
+  ret i32 %8
 
-17:                                               ; preds = %12
-  %18 = load i32, i32* %8, align 4
-  %19 = icmp slt i32 %18, 0
-  br i1 %19, label %23, label %20
+9:                                                ; preds = %3
+  %10 = icmp ugt i32 %5, 255
+  br i1 %10, label %19, label %11
 
-20:                                               ; preds = %17
-  %21 = load i32, i32* %8, align 4
-  %22 = icmp sge i32 %21, 512
-  br i1 %22, label %23, label %24
+11:                                               ; preds = %9
+  %12 = shl nuw nsw i32 %5, 9
+  %13 = or disjoint i32 %12, %4
+  %14 = zext nneg i32 %13 to i64
+  %15 = getelementptr inbounds i32, ptr %2, i64 %14
+  %16 = load i32, ptr %15, align 4, !tbaa !5
+  %17 = icmp ne i32 %16, 0
+  %18 = zext i1 %17 to i32
+  br label %19
 
-23:                                               ; preds = %20, %17
-  br label %65
+19:                                               ; preds = %9, %11
+  %20 = phi i32 [ 0, %9 ], [ %18, %11 ]
+  %21 = icmp ugt i32 %1, 255
+  br i1 %21, label %31, label %22
 
-24:                                               ; preds = %20
-  %25 = load i32, i32* %5, align 4
-  %26 = sub nsw i32 %25, 1
-  store i32 %26, i32* %9, align 4
-  br label %27
+22:                                               ; preds = %19
+  %23 = shl nuw nsw i32 %1, 9
+  %24 = or disjoint i32 %23, %4
+  %25 = zext nneg i32 %24 to i64
+  %26 = getelementptr inbounds i32, ptr %2, i64 %25
+  %27 = load i32, ptr %26, align 4, !tbaa !5
+  %28 = icmp ne i32 %27, 0
+  %29 = zext i1 %28 to i32
+  %30 = add nuw nsw i32 %20, %29
+  br label %31
 
-27:                                               ; preds = %61, %24
-  %28 = load i32, i32* %9, align 4
-  %29 = load i32, i32* %5, align 4
-  %30 = add nsw i32 %29, 1
-  %31 = icmp sle i32 %28, %30
-  br i1 %31, label %32, label %64
+31:                                               ; preds = %22, %19
+  %32 = phi i32 [ %20, %19 ], [ %30, %22 ]
+  %33 = add nsw i32 %1, 1
+  %34 = icmp ugt i32 %33, 255
+  br i1 %34, label %44, label %35
 
-32:                                               ; preds = %27
-  %33 = load i32, i32* %9, align 4
-  %34 = icmp slt i32 %33, 0
-  br i1 %34, label %46, label %35
+35:                                               ; preds = %31
+  %36 = shl nuw nsw i32 %33, 9
+  %37 = or disjoint i32 %36, %4
+  %38 = zext nneg i32 %37 to i64
+  %39 = getelementptr inbounds i32, ptr %2, i64 %38
+  %40 = load i32, ptr %39, align 4, !tbaa !5
+  %41 = icmp ne i32 %40, 0
+  %42 = zext i1 %41 to i32
+  %43 = add nuw nsw i32 %32, %42
+  br label %44
 
-35:                                               ; preds = %32
-  %36 = load i32, i32* %9, align 4
-  %37 = icmp sge i32 %36, 256
-  br i1 %37, label %46, label %38
+44:                                               ; preds = %3, %31, %35
+  %45 = phi i32 [ 0, %3 ], [ %32, %31 ], [ %43, %35 ]
+  %46 = icmp ugt i32 %0, 511
+  br i1 %46, label %71, label %47
 
-38:                                               ; preds = %35
-  %39 = load i32, i32* %8, align 4
-  %40 = load i32, i32* %4, align 4
-  %41 = icmp eq i32 %39, %40
-  br i1 %41, label %42, label %47
+47:                                               ; preds = %44
+  %48 = icmp ugt i32 %5, 255
+  br i1 %48, label %58, label %49
 
-42:                                               ; preds = %38
-  %43 = load i32, i32* %9, align 4
-  %44 = load i32, i32* %5, align 4
-  %45 = icmp eq i32 %43, %44
-  br i1 %45, label %46, label %47
+49:                                               ; preds = %47
+  %50 = shl nuw nsw i32 %5, 9
+  %51 = or disjoint i32 %50, %0
+  %52 = zext nneg i32 %51 to i64
+  %53 = getelementptr inbounds i32, ptr %2, i64 %52
+  %54 = load i32, ptr %53, align 4, !tbaa !5
+  %55 = icmp ne i32 %54, 0
+  %56 = zext i1 %55 to i32
+  %57 = add nuw nsw i32 %45, %56
+  br label %58
 
-46:                                               ; preds = %42, %35, %32
-  br label %61
+58:                                               ; preds = %49, %47
+  %59 = phi i32 [ %45, %47 ], [ %57, %49 ]
+  %60 = add nsw i32 %1, 1
+  %61 = icmp ugt i32 %60, 255
+  br i1 %61, label %71, label %62
 
-47:                                               ; preds = %42, %38
-  %48 = load i32*, i32** %6, align 8
-  %49 = load i32, i32* %8, align 4
-  %50 = load i32, i32* %9, align 4
-  %51 = mul nsw i32 %50, 512
-  %52 = add nsw i32 %49, %51
-  %53 = sext i32 %52 to i64
-  %54 = getelementptr inbounds i32, i32* %48, i64 %53
-  %55 = load i32, i32* %54, align 4
-  %56 = icmp ne i32 %55, 0
-  br i1 %56, label %57, label %60
+62:                                               ; preds = %58
+  %63 = shl nuw nsw i32 %60, 9
+  %64 = or disjoint i32 %63, %0
+  %65 = zext nneg i32 %64 to i64
+  %66 = getelementptr inbounds i32, ptr %2, i64 %65
+  %67 = load i32, ptr %66, align 4, !tbaa !5
+  %68 = icmp ne i32 %67, 0
+  %69 = zext i1 %68 to i32
+  %70 = add nuw nsw i32 %59, %69
+  br label %71
 
-57:                                               ; preds = %47
-  %58 = load i32, i32* %7, align 4
-  %59 = add nsw i32 %58, 1
-  store i32 %59, i32* %7, align 4
-  br label %60
+71:                                               ; preds = %62, %58, %44
+  %72 = phi i32 [ %45, %44 ], [ %59, %58 ], [ %70, %62 ]
+  %73 = add nsw i32 %0, 1
+  %74 = icmp ugt i32 %73, 511
+  br i1 %74, label %7, label %75
 
-60:                                               ; preds = %57, %47
-  br label %61
+75:                                               ; preds = %71
+  %76 = icmp ugt i32 %5, 255
+  br i1 %76, label %86, label %77
 
-61:                                               ; preds = %60, %46
-  %62 = load i32, i32* %9, align 4
-  %63 = add nsw i32 %62, 1
-  store i32 %63, i32* %9, align 4
-  br label %27, !llvm.loop !4
+77:                                               ; preds = %75
+  %78 = shl nuw nsw i32 %5, 9
+  %79 = or disjoint i32 %78, %73
+  %80 = zext nneg i32 %79 to i64
+  %81 = getelementptr inbounds i32, ptr %2, i64 %80
+  %82 = load i32, ptr %81, align 4, !tbaa !5
+  %83 = icmp ne i32 %82, 0
+  %84 = zext i1 %83 to i32
+  %85 = add nuw nsw i32 %72, %84
+  br label %86
 
-64:                                               ; preds = %27
-  br label %65
+86:                                               ; preds = %75, %77
+  %87 = phi i32 [ %72, %75 ], [ %85, %77 ]
+  %88 = icmp ugt i32 %1, 255
+  br i1 %88, label %98, label %89
 
-65:                                               ; preds = %64, %23
-  %66 = load i32, i32* %8, align 4
-  %67 = add nsw i32 %66, 1
-  store i32 %67, i32* %8, align 4
-  br label %12, !llvm.loop !6
+89:                                               ; preds = %86
+  %90 = shl nuw nsw i32 %1, 9
+  %91 = or disjoint i32 %90, %73
+  %92 = zext nneg i32 %91 to i64
+  %93 = getelementptr inbounds i32, ptr %2, i64 %92
+  %94 = load i32, ptr %93, align 4, !tbaa !5
+  %95 = icmp ne i32 %94, 0
+  %96 = zext i1 %95 to i32
+  %97 = add nuw nsw i32 %87, %96
+  br label %98
 
-68:                                               ; preds = %12
-  %69 = load i32, i32* %7, align 4
-  ret i32 %69
-}
+98:                                               ; preds = %89, %86
+  %99 = phi i32 [ %87, %86 ], [ %97, %89 ]
+  %100 = add nsw i32 %1, 1
+  %101 = icmp ugt i32 %100, 255
+  br i1 %101, label %7, label %102
 
-; Function Attrs: noinline nounwind optnone ssp uwtable
-define void @updatePixel(i32 %0, i32 %1, i32* %2, i32* %3) #0 {
-  %5 = alloca i32, align 4
-  %6 = alloca i32, align 4
-  %7 = alloca i32*, align 8
-  %8 = alloca i32*, align 8
-  %9 = alloca i32, align 4
-  store i32 %0, i32* %5, align 4
-  store i32 %1, i32* %6, align 4
-  store i32* %2, i32** %7, align 8
-  store i32* %3, i32** %8, align 8
-  %10 = load i32, i32* %5, align 4
-  %11 = load i32, i32* %6, align 4
-  %12 = load i32*, i32** %7, align 8
-  %13 = call i32 @countLivingNeighbors(i32 %10, i32 %11, i32* %12)
-  store i32 %13, i32* %9, align 4
-  %14 = load i32*, i32** %7, align 8
-  %15 = load i32, i32* %5, align 4
-  %16 = load i32, i32* %6, align 4
-  %17 = mul nsw i32 %16, 512
-  %18 = add nsw i32 %15, %17
-  %19 = sext i32 %18 to i64
-  %20 = getelementptr inbounds i32, i32* %14, i64 %19
-  %21 = load i32, i32* %20, align 4
-  %22 = icmp eq i32 %21, 1
-  br i1 %22, label %23, label %40
-
-23:                                               ; preds = %4
-  %24 = load i32, i32* %9, align 4
-  %25 = icmp ne i32 %24, 2
-  br i1 %25, label %26, label %29
-
-26:                                               ; preds = %23
-  %27 = load i32, i32* %9, align 4
-  %28 = icmp ne i32 %27, 3
-  br label %29
-
-29:                                               ; preds = %26, %23
-  %30 = phi i1 [ false, %23 ], [ %28, %26 ]
-  %31 = zext i1 %30 to i64
-  %32 = select i1 %30, i32 0, i32 1
-  %33 = load i32*, i32** %8, align 8
-  %34 = load i32, i32* %5, align 4
-  %35 = load i32, i32* %6, align 4
-  %36 = mul nsw i32 %35, 512
-  %37 = add nsw i32 %34, %36
-  %38 = sext i32 %37 to i64
-  %39 = getelementptr inbounds i32, i32* %33, i64 %38
-  store i32 %32, i32* %39, align 4
-  br label %52
-
-40:                                               ; preds = %4
-  %41 = load i32, i32* %9, align 4
-  %42 = icmp ne i32 %41, 3
-  %43 = zext i1 %42 to i64
-  %44 = select i1 %42, i32 0, i32 1
-  %45 = load i32*, i32** %8, align 8
-  %46 = load i32, i32* %5, align 4
-  %47 = load i32, i32* %6, align 4
-  %48 = mul nsw i32 %47, 512
-  %49 = add nsw i32 %46, %48
-  %50 = sext i32 %49 to i64
-  %51 = getelementptr inbounds i32, i32* %45, i64 %50
-  store i32 %44, i32* %51, align 4
-  br label %52
-
-52:                                               ; preds = %40, %29
-  ret void
-}
-
-; Function Attrs: noinline nounwind optnone ssp uwtable
-define void @swapPixels(i32** %0, i32** %1) #0 {
-  %3 = alloca i32**, align 8
-  %4 = alloca i32**, align 8
-  %5 = alloca i32*, align 8
-  store i32** %0, i32*** %3, align 8
-  store i32** %1, i32*** %4, align 8
-  %6 = load i32**, i32*** %3, align 8
-  %7 = load i32*, i32** %6, align 8
-  store i32* %7, i32** %5, align 8
-  %8 = load i32**, i32*** %4, align 8
-  %9 = load i32*, i32** %8, align 8
-  %10 = load i32**, i32*** %3, align 8
-  store i32* %9, i32** %10, align 8
-  %11 = load i32*, i32** %5, align 8
-  %12 = load i32**, i32*** %4, align 8
-  store i32* %11, i32** %12, align 8
-  ret void
-}
-
-; Function Attrs: noinline nounwind optnone ssp uwtable
-define void @gameOfLife(i32* %0, i32* %1) #0 {
-  %3 = alloca i32*, align 8
-  %4 = alloca i32*, align 8
-  %5 = alloca i32, align 4
-  %6 = alloca i32, align 4
-  store i32* %0, i32** %3, align 8
-  store i32* %1, i32** %4, align 8
-  br label %7
-
-7:                                                ; preds = %2, %40
-  store i32 0, i32* %5, align 4
-  br label %8
-
-8:                                                ; preds = %37, %7
-  %9 = load i32, i32* %5, align 4
-  %10 = icmp slt i32 %9, 512
-  br i1 %10, label %11, label %40
-
-11:                                               ; preds = %8
-  store i32 0, i32* %6, align 4
-  br label %12
-
-12:                                               ; preds = %33, %11
-  %13 = load i32, i32* %6, align 4
-  %14 = icmp slt i32 %13, 256
-  br i1 %14, label %15, label %36
-
-15:                                               ; preds = %12
-  %16 = load i32, i32* %5, align 4
-  %17 = load i32, i32* %6, align 4
-  %18 = load i32*, i32** %3, align 8
-  %19 = load i32, i32* %5, align 4
-  %20 = load i32, i32* %6, align 4
-  %21 = mul nsw i32 %20, 512
-  %22 = add nsw i32 %19, %21
-  %23 = sext i32 %22 to i64
-  %24 = getelementptr inbounds i32, i32* %18, i64 %23
-  %25 = load i32, i32* %24, align 4
-  %26 = icmp ne i32 %25, 0
-  %27 = zext i1 %26 to i64
-  %28 = select i1 %26, i32 16711680, i32 -16777216
-  call void @simPutPixel(i32 %16, i32 %17, i32 %28)
-  %29 = load i32, i32* %5, align 4
-  %30 = load i32, i32* %6, align 4
-  %31 = load i32*, i32** %3, align 8
-  %32 = load i32*, i32** %4, align 8
-  call void @updatePixel(i32 %29, i32 %30, i32* %31, i32* %32)
-  br label %33
-
-33:                                               ; preds = %15
-  %34 = load i32, i32* %6, align 4
-  %35 = add nsw i32 %34, 1
-  store i32 %35, i32* %6, align 4
-  br label %12, !llvm.loop !7
-
-36:                                               ; preds = %12
-  br label %37
-
-37:                                               ; preds = %36
-  %38 = load i32, i32* %5, align 4
-  %39 = add nsw i32 %38, 1
-  store i32 %39, i32* %5, align 4
-  br label %8, !llvm.loop !8
-
-40:                                               ; preds = %8
-  call void @swapPixels(i32** %3, i32** %4)
-  call void (...) @simFlush()
+102:                                              ; preds = %98
+  %103 = shl nuw nsw i32 %100, 9
+  %104 = or disjoint i32 %103, %73
+  %105 = zext nneg i32 %104 to i64
+  %106 = getelementptr inbounds i32, ptr %2, i64 %105
+  %107 = load i32, ptr %106, align 4, !tbaa !5
+  %108 = icmp ne i32 %107, 0
+  %109 = zext i1 %108 to i32
+  %110 = add nuw nsw i32 %99, %109
   br label %7
 }
 
-declare void @simPutPixel(i32, i32, i32) #1
+; Function Attrs: mustprogress nocallback nofree nosync nounwind willreturn memory(argmem: readwrite)
+declare void @llvm.lifetime.start.p0(i64 immarg, ptr nocapture) #1
 
-declare void @simFlush(...) #1
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+define dso_local void @updatePixel(i32 noundef %0, i32 noundef %1, ptr nocapture noundef readonly %2, ptr nocapture noundef writeonly %3) local_unnamed_addr #2 {
+  %5 = tail call i32 @countLivingNeighbors(i32 noundef %0, i32 noundef %1, ptr noundef %2)
+  %6 = shl nsw i32 %1, 9
+  %7 = add nsw i32 %6, %0
+  %8 = sext i32 %7 to i64
+  %9 = getelementptr inbounds i32, ptr %2, i64 %8
+  %10 = load i32, ptr %9, align 4, !tbaa !5
+  %11 = icmp eq i32 %10, 1
+  %12 = and i32 %5, -2
+  %13 = icmp eq i32 %12, 2
+  %14 = icmp eq i32 %5, 3
+  %15 = select i1 %11, i1 %13, i1 %14
+  %16 = zext i1 %15 to i32
+  %17 = getelementptr inbounds i32, ptr %3, i64 %8
+  store i32 %16, ptr %17, align 4
+  ret void
+}
 
-; Function Attrs: noinline nounwind optnone ssp uwtable
-define void @app() #0 {
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+define dso_local void @swapPixels(ptr nocapture noundef %0, ptr nocapture noundef %1) local_unnamed_addr #2 {
+  %3 = load ptr, ptr %0, align 8, !tbaa !9
+  %4 = load ptr, ptr %1, align 8, !tbaa !9
+  store ptr %4, ptr %0, align 8, !tbaa !9
+  store ptr %3, ptr %1, align 8, !tbaa !9
+  ret void
+}
+
+; Function Attrs: noreturn nounwind uwtable
+define dso_local void @gameOfLife(ptr nocapture noundef %0, ptr nocapture noundef %1) local_unnamed_addr #3 {
+  br label %3
+
+3:                                                ; preds = %2, %9
+  %4 = phi ptr [ %0, %2 ], [ %5, %9 ]
+  %5 = phi ptr [ %1, %2 ], [ %4, %9 ]
+  br label %6
+
+6:                                                ; preds = %3, %10
+  %7 = phi i64 [ 0, %3 ], [ %11, %10 ]
+  %8 = trunc i64 %7 to i32
+  br label %13
+
+9:                                                ; preds = %10
+  tail call void (...) @simFlush() #6
+  br label %3
+
+10:                                               ; preds = %13
+  %11 = add nuw nsw i64 %7, 1
+  %12 = icmp eq i64 %11, 512
+  br i1 %12, label %9, label %6, !llvm.loop !11
+
+13:                                               ; preds = %6, %13
+  %14 = phi i64 [ 0, %6 ], [ %31, %13 ]
+  %15 = shl nuw nsw i64 %14, 9
+  %16 = or disjoint i64 %15, %7
+  %17 = getelementptr inbounds i32, ptr %4, i64 %16
+  %18 = load i32, ptr %17, align 4, !tbaa !5
+  %19 = icmp eq i32 %18, 0
+  %20 = select i1 %19, i32 -16777216, i32 16711680
+  %21 = trunc i64 %14 to i32
+  tail call void @simPutPixel(i32 noundef %8, i32 noundef %21, i32 noundef %20) #6
+  %22 = tail call i32 @countLivingNeighbors(i32 noundef %8, i32 noundef %21, ptr noundef %4)
+  %23 = load i32, ptr %17, align 4, !tbaa !5
+  %24 = icmp eq i32 %23, 1
+  %25 = and i32 %22, -2
+  %26 = icmp eq i32 %25, 2
+  %27 = icmp eq i32 %22, 3
+  %28 = select i1 %24, i1 %26, i1 %27
+  %29 = zext i1 %28 to i32
+  %30 = getelementptr inbounds i32, ptr %5, i64 %16
+  store i32 %29, ptr %30, align 4
+  %31 = add nuw nsw i64 %14, 1
+  %32 = icmp eq i64 %31, 256
+  br i1 %32, label %10, label %13, !llvm.loop !13
+}
+
+declare void @simPutPixel(i32 noundef, i32 noundef, i32 noundef) local_unnamed_addr #4
+
+declare void @simFlush(...) local_unnamed_addr #4
+
+; Function Attrs: noreturn nounwind uwtable
+define dso_local void @app() local_unnamed_addr #3 {
   %1 = alloca [512 x [256 x i32]], align 16
   %2 = alloca [512 x [256 x i32]], align 16
-  %3 = alloca i32, align 4
-  %4 = alloca i32, align 4
-  %5 = bitcast [512 x [256 x i32]]* %1 to i8*
-  call void @llvm.memset.p0i8.i64(i8* align 16 %5, i8 0, i64 524288, i1 false)
-  %6 = bitcast [512 x [256 x i32]]* %2 to i8*
-  call void @llvm.memset.p0i8.i64(i8* align 16 %6, i8 0, i64 524288, i1 false)
-  store i32 0, i32* %3, align 4
-  br label %7
+  call void @llvm.lifetime.start.p0(i64 524288, ptr nonnull %1) #6
+  call void @llvm.memset.p0.i64(ptr noundef nonnull align 16 dereferenceable(524288) %1, i8 0, i64 524288, i1 false)
+  call void @llvm.lifetime.start.p0(i64 524288, ptr nonnull %2) #6
+  call void @llvm.memset.p0.i64(ptr noundef nonnull align 16 dereferenceable(524288) %2, i8 0, i64 524288, i1 false)
+  br label %3
 
-7:                                                ; preds = %39, %0
-  %8 = load i32, i32* %3, align 4
-  %9 = icmp slt i32 %8, 512
-  br i1 %9, label %10, label %42
+3:                                                ; preds = %0, %35
+  %4 = phi i64 [ 0, %0 ], [ %36, %35 ]
+  br label %38
 
-10:                                               ; preds = %7
-  store i32 0, i32* %4, align 4
-  br label %11
+5:                                                ; preds = %35, %11
+  %6 = phi ptr [ %7, %11 ], [ %1, %35 ]
+  %7 = phi ptr [ %6, %11 ], [ %2, %35 ]
+  br label %8
 
-11:                                               ; preds = %35, %10
-  %12 = load i32, i32* %4, align 4
-  %13 = icmp slt i32 %12, 256
-  br i1 %13, label %14, label %38
+8:                                                ; preds = %12, %5
+  %9 = phi i64 [ 0, %5 ], [ %13, %12 ]
+  %10 = trunc i64 %9 to i32
+  br label %15
 
-14:                                               ; preds = %11
-  %15 = call i32 (...) @simRand()
-  %16 = load i32, i32* %3, align 4
-  %17 = sext i32 %16 to i64
-  %18 = getelementptr inbounds [512 x [256 x i32]], [512 x [256 x i32]]* %1, i64 0, i64 %17
-  %19 = load i32, i32* %4, align 4
-  %20 = sext i32 %19 to i64
-  %21 = getelementptr inbounds [256 x i32], [256 x i32]* %18, i64 0, i64 %20
-  store i32 %15, i32* %21, align 4
-  %22 = load i32, i32* %3, align 4
-  %23 = sext i32 %22 to i64
-  %24 = getelementptr inbounds [512 x [256 x i32]], [512 x [256 x i32]]* %1, i64 0, i64 %23
-  %25 = load i32, i32* %4, align 4
-  %26 = sext i32 %25 to i64
-  %27 = getelementptr inbounds [256 x i32], [256 x i32]* %24, i64 0, i64 %26
-  %28 = load i32, i32* %27, align 4
-  %29 = load i32, i32* %3, align 4
-  %30 = sext i32 %29 to i64
-  %31 = getelementptr inbounds [512 x [256 x i32]], [512 x [256 x i32]]* %2, i64 0, i64 %30
-  %32 = load i32, i32* %4, align 4
-  %33 = sext i32 %32 to i64
-  %34 = getelementptr inbounds [256 x i32], [256 x i32]* %31, i64 0, i64 %33
-  store i32 %28, i32* %34, align 4
-  br label %35
+11:                                               ; preds = %12
+  tail call void (...) @simFlush() #6
+  br label %5
 
-35:                                               ; preds = %14
-  %36 = load i32, i32* %4, align 4
-  %37 = add nsw i32 %36, 1
-  store i32 %37, i32* %4, align 4
-  br label %11, !llvm.loop !9
+12:                                               ; preds = %15
+  %13 = add nuw nsw i64 %9, 1
+  %14 = icmp eq i64 %13, 512
+  br i1 %14, label %11, label %8, !llvm.loop !11
 
-38:                                               ; preds = %11
-  br label %39
+15:                                               ; preds = %15, %8
+  %16 = phi i64 [ 0, %8 ], [ %33, %15 ]
+  %17 = shl nuw nsw i64 %16, 9
+  %18 = add nuw nsw i64 %17, %9
+  %19 = getelementptr inbounds i32, ptr %6, i64 %18
+  %20 = load i32, ptr %19, align 4, !tbaa !5
+  %21 = icmp eq i32 %20, 0
+  %22 = select i1 %21, i32 -16777216, i32 16711680
+  %23 = trunc i64 %16 to i32
+  tail call void @simPutPixel(i32 noundef %10, i32 noundef %23, i32 noundef %22) #6
+  %24 = call i32 @countLivingNeighbors(i32 noundef %10, i32 noundef %23, ptr noundef nonnull %6)
+  %25 = load i32, ptr %19, align 4, !tbaa !5
+  %26 = icmp eq i32 %25, 1
+  %27 = and i32 %24, -2
+  %28 = icmp eq i32 %27, 2
+  %29 = icmp eq i32 %24, 3
+  %30 = select i1 %26, i1 %28, i1 %29
+  %31 = zext i1 %30 to i32
+  %32 = getelementptr inbounds i32, ptr %7, i64 %18
+  store i32 %31, ptr %32, align 4
+  %33 = add nuw nsw i64 %16, 1
+  %34 = icmp eq i64 %33, 256
+  br i1 %34, label %12, label %15, !llvm.loop !13
 
-39:                                               ; preds = %38
-  %40 = load i32, i32* %3, align 4
-  %41 = add nsw i32 %40, 1
-  store i32 %41, i32* %3, align 4
-  br label %7, !llvm.loop !10
+35:                                               ; preds = %38
+  %36 = add nuw nsw i64 %4, 1
+  %37 = icmp eq i64 %36, 512
+  br i1 %37, label %5, label %3, !llvm.loop !14
 
-42:                                               ; preds = %7
-  %43 = getelementptr inbounds [512 x [256 x i32]], [512 x [256 x i32]]* %1, i64 0, i64 0
-  %44 = bitcast [256 x i32]* %43 to i32*
-  %45 = getelementptr inbounds [512 x [256 x i32]], [512 x [256 x i32]]* %2, i64 0, i64 0
-  %46 = bitcast [256 x i32]* %45 to i32*
-  call void @gameOfLife(i32* %44, i32* %46)
-  ret void
+38:                                               ; preds = %3, %38
+  %39 = phi i64 [ 0, %3 ], [ %43, %38 ]
+  %40 = tail call i32 (...) @simRand() #6
+  %41 = getelementptr inbounds [512 x [256 x i32]], ptr %1, i64 0, i64 %4, i64 %39
+  store i32 %40, ptr %41, align 4, !tbaa !5
+  %42 = getelementptr inbounds [512 x [256 x i32]], ptr %2, i64 0, i64 %4, i64 %39
+  store i32 %40, ptr %42, align 4, !tbaa !5
+  %43 = add nuw nsw i64 %39, 1
+  %44 = icmp eq i64 %43, 256
+  br i1 %44, label %35, label %38, !llvm.loop !15
 }
 
-; Function Attrs: argmemonly nofree nosync nounwind willreturn writeonly
-declare void @llvm.memset.p0i8.i64(i8* nocapture writeonly, i8, i64, i1 immarg) #2
+; Function Attrs: mustprogress nocallback nofree nounwind willreturn memory(argmem: write)
+declare void @llvm.memset.p0.i64(ptr nocapture writeonly, i8, i64, i1 immarg) #5
 
-declare i32 @simRand(...) #1
+declare i32 @simRand(...) local_unnamed_addr #4
 
-attributes #0 = { noinline nounwind optnone ssp uwtable "darwin-stkchk-strong-link" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "min-legal-vector-width"="0" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="true" "probe-stack"="___chkstk_darwin" "stack-protector-buffer-size"="8" "target-cpu"="penryn" "target-features"="+cx16,+cx8,+fxsr,+mmx,+sahf,+sse,+sse2,+sse3,+sse4.1,+ssse3,+x87" "tune-cpu"="generic" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { "darwin-stkchk-strong-link" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="true" "probe-stack"="___chkstk_darwin" "stack-protector-buffer-size"="8" "target-cpu"="penryn" "target-features"="+cx16,+cx8,+fxsr,+mmx,+sahf,+sse,+sse2,+sse3,+sse4.1,+ssse3,+x87" "tune-cpu"="generic" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #2 = { argmemonly nofree nosync nounwind willreturn writeonly }
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: read) uwtable "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+attributes #1 = { mustprogress nocallback nofree nosync nounwind willreturn memory(argmem: readwrite) }
+attributes #2 = { mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+attributes #3 = { noreturn nounwind uwtable "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+attributes #4 = { "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+attributes #5 = { mustprogress nocallback nofree nounwind willreturn memory(argmem: write) }
+attributes #6 = { nounwind }
 
-!llvm.module.flags = !{!0, !1, !2}
-!llvm.ident = !{!3}
+!llvm.module.flags = !{!0, !1, !2, !3}
+!llvm.ident = !{!4}
 
-!0 = !{i32 2, !"SDK Version", [2 x i32] [i32 11, i32 3]}
-!1 = !{i32 1, !"wchar_size", i32 4}
-!2 = !{i32 7, !"PIC Level", i32 2}
-!3 = !{!"Apple clang version 13.0.0 (clang-1300.0.29.3)"}
-!4 = distinct !{!4, !5}
-!5 = !{!"llvm.loop.mustprogress"}
-!6 = distinct !{!6, !5}
-!7 = distinct !{!7, !5}
-!8 = distinct !{!8, !5}
-!9 = distinct !{!9, !5}
-!10 = distinct !{!10, !5}
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{!"Ubuntu clang version 18.1.3 (1ubuntu1)"}
+!5 = !{!6, !6, i64 0}
+!6 = !{!"int", !7, i64 0}
+!7 = !{!"omnipotent char", !8, i64 0}
+!8 = !{!"Simple C/C++ TBAA"}
+!9 = !{!10, !10, i64 0}
+!10 = !{!"any pointer", !7, i64 0}
+!11 = distinct !{!11, !12}
+!12 = !{!"llvm.loop.mustprogress"}
+!13 = distinct !{!13, !12}
+!14 = distinct !{!14, !12}
+!15 = distinct !{!15, !12}
