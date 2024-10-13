@@ -25,10 +25,20 @@ void updatePixel(int x, int y, int* pixels, int* new_pixels) {
     int counterLivingNeighbors = countLivingNeighbors(x, y, pixels);
     
     if (pixels[x + y * SIM_X_SIZE] == 1) {
-        new_pixels[x + y * SIM_X_SIZE] = (counterLivingNeighbors != 2 && counterLivingNeighbors != 3) ? 0 : 1;
+        if(counterLivingNeighbors != 2 && counterLivingNeighbors != 3) {
+            new_pixels[x + y * SIM_X_SIZE] = 0;
+        }
+        else {
+            new_pixels[x + y * SIM_X_SIZE] = 1;
+        }
     } 
     else {
-        new_pixels[x + y * SIM_X_SIZE] = (counterLivingNeighbors != 3) ? 0 : 1;
+        if(counterLivingNeighbors != 3) {
+            new_pixels[x + y * SIM_X_SIZE] = 0;
+        }
+        else {
+            new_pixels[x + y * SIM_X_SIZE] = 1;
+        }
     }
 }
 
