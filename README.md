@@ -12,4 +12,4 @@ A repository with my lvm course assignments, the result of which will be my own 
 
 3. The IR generator of my graphics application + Interpretation:
 
-    [GeneratorIR](/GeneratorIR/)
+    [IRGenerator](/IRGenerator/)

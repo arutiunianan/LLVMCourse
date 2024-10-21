@@ -34,7 +34,7 @@ int main() {
     FunctionType* simRandType = 
         FunctionType::get(Type::getInt32Ty(context), {voidType}, false);
     FunctionCallee simRandFunc =
-        module->getOrInsertFunction("simRand", simFlushType);
+        module->getOrInsertFunction("simRand", simRandType);
 
 
 
@@ -42,7 +42,7 @@ int main() {
     FunctionType* countLivingNeighborsFuncType = 
         FunctionType::get(builder.getInt32Ty(), {builder.getInt32Ty(), 
                                                 builder.getInt32Ty(),
-                                                builder.getInt32PtrTy()}, 
+                                                builder.getInt32Ty()->getPointerTo()}, 
                                                 false);
     Function* countLivingNeighborsFunc =
         Function::Create(countLivingNeighborsFuncType, Function::ExternalLinkage, 
@@ -78,10 +78,10 @@ int main() {
     builder.SetInsertPoint(CBB0);
     //%4 = add nsw i32 %0, -1
     Value* count4 = builder.CreateAdd
-        (count0, ConstantInt::get(context, APInt(32, -1)))
+        (count0, ConstantInt::get(context, APInt(32, -1)));
     //%5 = add nsw i32 %1, -1
     Value* count5 = builder.CreateAdd
-        (count1, ConstantInt::get(context, APInt(32, -1)))
+        (count1, ConstantInt::get(context, APInt(32, -1)));
     //%6 = icmp ugt i32 %4, 511
     Value* count6 = builder.CreateICmpUGT
         (count4, ConstantInt::get(context, APInt(32, 511)));
@@ -92,7 +92,7 @@ int main() {
 //------------------------------ %7 ------------------------------
     builder.SetInsertPoint(CBB7);
     //%8 = phi i32 [ %72, %71 ], [ %99, %98 ], [ %110, %102 ]
-    PHINode count8 = builder.CreatePHI(builder.getInt32Ty(), 3);
+    PHINode* count8 = builder.CreatePHI(builder.getInt32Ty(), 3);
     //ret i32 %8
     builder.CreateRet(count8);
 //----------------------------------------------------------------
@@ -100,7 +100,7 @@ int main() {
 //------------------------------ %9 ------------------------------
     builder.SetInsertPoint(CBB9);
     //%10 = icmp ugt i32 %5, 255
-    Value* count6 = builder.CreateICmpUGT
+    Value* count10 = builder.CreateICmpUGT
         (count5, ConstantInt::get(context, APInt(32, 255)));
     //br i1 %10, label %19, label %11
     builder.CreateCondBr(count10, CBB19, CBB11);
@@ -110,9 +110,9 @@ int main() {
     builder.SetInsertPoint(CBB11);
     //%12 = shl nuw nsw i32 %5, 9
     Value* count12 = builder.CreateShl
-        (count6, ConstantInt::get(context, APInt(32, 9)));
+        (count5, ConstantInt::get(context, APInt(32, 9)));
     //%13 = or disjoint i32 %12, %4
-    Value* count13 = builder.CreateBinOr(count12, count4);
+    Value* count13 = builder.CreateOr(count12, count4);
     //%14 = zext nneg i32 %13 to i64
     Value* count14 = builder.CreateZExt
         (count13, Type::getInt64Ty(context));
@@ -129,13 +129,13 @@ int main() {
     Value* count18 = builder.CreateZExt
         (count17, Type::getInt32Ty(context));
     //br label %19
-    builder.CreateCondBr(CBB19);
+    builder.CreateBr(CBB19);
 //----------------------------------------------------------------
 
 //------------------------------ %19 ------------------------------
     builder.SetInsertPoint(CBB19);
     //%20 = phi i32 [ 0, %9 ], [ %18, %11 ]
-    PHINode count20 = builder.CreatePHI(builder.getInt32Ty(), 2);
+    PHINode* count20 = builder.CreatePHI(builder.getInt32Ty(), 2);
     //%21 = icmp ugt i32 %1, 255
     Value* count21 = builder.CreateICmpUGT
         (count1, ConstantInt::get(context, APInt(32, 255)));
@@ -146,39 +146,39 @@ int main() {
 //------------------------------ %22 ------------------------------
     builder.SetInsertPoint(CBB22);
     //%23 = shl nuw nsw i32 %1, 9
-    Value* count12 = builder.CreateShl
+    Value* count23 = builder.CreateShl
         (count1, ConstantInt::get(context, APInt(32, 9)));
     //%24 = or disjoint i32 %23, %4
-    Value* count13 = builder.CreateBinOr(count23, count4);
+    Value* count24 = builder.CreateOr(count23, count4);
     //%25 = zext nneg i32 %24 to i64
-    Value* count14 = builder.CreateZExt
+    Value* count25 = builder.CreateZExt
         (count24, Type::getInt64Ty(context));
     //%26 = getelementptr inbounds i32, ptr %2, i64 %25
-    Value* count15 = builder.CreateGEP
+    Value* count26 = builder.CreateGEP
         (Type::getInt32Ty(context), count2, count25);
     //%27 = load i32, ptr %26, align 4, !tbaa !5
-    Value* count16 = builder.CreateLoad
+    Value* count27 = builder.CreateLoad
         (Type::getInt32Ty(context), count26);
     //%28 = icmp ne i32 %27, 0
-    Value* count17 = builder.CreateICmpNE
+    Value* count28 = builder.CreateICmpNE
         (count27, ConstantInt::get(Type::getInt32Ty(context), 0));
     //%29 = zext i1 %28 to i32
-    Value* count18 = builder.CreateZExt
+    Value* count29 = builder.CreateZExt
         (count28, Type::getInt32Ty(context));
     //%30 = add nuw nsw i32 %20, %29
     Value* count30 = builder.CreateAdd
         (count20, count29, "", true, true);
     //br label %31
-    builder.CreateCondBr(CBB31);
+    builder.CreateBr(CBB31);
 //----------------------------------------------------------------
 
 //------------------------------ %31 ------------------------------
     builder.SetInsertPoint(CBB31);
     //%32 = phi i32 [ %20, %19 ], [ %30, %22 ]
-    PHINode count32 = builder.CreatePHI(builder.getInt32Ty(), 2);
+    PHINode* count32 = builder.CreatePHI(builder.getInt32Ty(), 2);
     //%33 = add nsw i32 %1, 1
-    Value* coun33 = builder.CreateAdd
-        (count1, ConstantInt::get(context, APInt(32, 1)))
+    Value* count33 = builder.CreateAdd
+        (count1, ConstantInt::get(context, APInt(32, 1)));
     //%34 = icmp ugt i32 %33, 255
     Value* count34 = builder.CreateICmpUGT
         (count33, ConstantInt::get(context, APInt(32, 255)));
@@ -192,7 +192,7 @@ int main() {
     Value* count36 = builder.CreateShl
         (count33, ConstantInt::get(context, APInt(32, 9)));
     //%37 = or disjoint i32 %36, %4
-    Value* count37 = builder.CreateBinOr(count36, count4);
+    Value* count37 = builder.CreateOr(count36, count4);
     //%38 = zext nneg i32 %37 to i64
     Value* count38 = builder.CreateZExt
         (count37, Type::getInt64Ty(context));
@@ -212,13 +212,13 @@ int main() {
     Value* count43 = builder.CreateAdd
         (count32, count42, "", true, true);
     //br label %44
-    builder.CreateCondBr(CBB44);
+    builder.CreateBr(CBB44);
 //----------------------------------------------------------------
 
 //------------------------------ %44 ------------------------------
     builder.SetInsertPoint(CBB44);
     //%45 = phi i32 [ 0, %3 ], [ %32, %31 ], [ %43, %35 ]
-    PHINode count45 = builder.CreatePHI(builder.getInt32Ty(), 3);
+    PHINode* count45 = builder.CreatePHI(builder.getInt32Ty(), 3);
     //%46 = icmp ugt i32 %0, 511
     Value* count46 = builder.CreateICmpUGT
         (count0, ConstantInt::get(context, APInt(32, 511)));
@@ -241,10 +241,10 @@ int main() {
     Value* count50 = builder.CreateShl
         (count5, ConstantInt::get(context, APInt(32, 9)));
     //%51 = or disjoint i32 %50, %0
-    Value* count51 = builder.CreateBinOr(count50, count0);
+    Value* count51 = builder.CreateOr(count50, count0);
     //%52 = zext nneg i32 %51 to i64
     Value* count52 = builder.CreateZExt
-        (count50, Type::getInt64Ty(context));
+        (count51, Type::getInt64Ty(context));
     //%53 = getelementptr inbounds i32, ptr %2, i64 %52
     Value* count53 = builder.CreateGEP
         (Type::getInt32Ty(context), count2, count52);
@@ -261,21 +261,21 @@ int main() {
     Value* count57 = builder.CreateAdd
         (count45, count56, "", true, true);
     //br label %58
-    builder.CreateCondBr(CBB58);
+    builder.CreateBr(CBB58);
 //----------------------------------------------------------------
 
 //------------------------------ %58 ------------------------------
     builder.SetInsertPoint(CBB58);
     //%59 = phi i32 [ %45, %47 ], [ %57, %49 ]
-    PHINode count59 = builder.CreatePHI(builder.getInt32Ty(), 2);
+    PHINode* count59 = builder.CreatePHI(builder.getInt32Ty(), 2);
     //%60 = add nsw i32 %1, 1
     Value* count60 = builder.CreateAdd
-        (count1, ConstantInt::get(context, APInt(32, 1)))
+        (count1, ConstantInt::get(context, APInt(32, 1)));
     //%61 = icmp ugt i32 %60, 255
     Value* count61 = builder.CreateICmpUGT
         (count60, ConstantInt::get(context, APInt(32, 255)));
     //br i1 %61, label %71, label %62
-    builder.CreateCondBr(count61, CBB71, CBB61);
+    builder.CreateCondBr(count61, CBB71, CBB62);
 //----------------------------------------------------------------
 
 //------------------------------ %62 ------------------------------
@@ -284,7 +284,7 @@ int main() {
     Value* count63 = builder.CreateShl
         (count60, ConstantInt::get(context, APInt(32, 9)));
     //%64 = or disjoint i32 %63, %0
-    Value* count64 = builder.CreateBinOr(count63, count0);
+    Value* count64 = builder.CreateOr(count63, count0);
     //%65 = zext nneg i32 %64 to i64
     Value* count65 = builder.CreateZExt
         (count64, Type::getInt64Ty(context));
@@ -337,7 +337,7 @@ int main() {
     Value* count78 = builder.CreateShl
         (count5, ConstantInt::get(context, APInt(32, 9)));
     //%79 = or disjoint i32 %78, %73
-    Value* count79 = builder.CreateBinOr(count78, count73);
+    Value* count79 = builder.CreateOr(count78, count73);
     //%80 = zext nneg i32 %79 to i64
     Value* count80 = builder.CreateZExt
         (count79, Type::getInt64Ty(context));
@@ -378,7 +378,7 @@ int main() {
     Value* count90 = builder.CreateShl
         (count1, ConstantInt::get(context, APInt(32, 9)));
     //%91 = or disjoint i32 %90, %73
-    Value* count91 = builder.CreateBinOr(count90, count73);
+    Value* count91 = builder.CreateOr(count90, count73);
     //%92 = zext nneg i32 %91 to i64
     Value* count92 = builder.CreateZExt
         (count91, Type::getInt64Ty(context));
@@ -421,7 +421,7 @@ int main() {
     Value* count103 = builder.CreateShl
         (count100, ConstantInt::get(context, APInt(32, 9)));
     //%104 = or disjoint i32 %103, %73
-    Value* count104 = builder.CreateBinOr(count103, count73);
+    Value* count104 = builder.CreateOr(count103, count73);
     //%105 = zext nneg i32 %104 to i64
     Value* count105 = builder.CreateZExt
         (count104, Type::getInt64Ty(context));
@@ -430,7 +430,7 @@ int main() {
         (Type::getInt32Ty(context), count2, count105);
     //%107 = load i32, ptr %106, align 4, !tbaa !5
     Value* count107 = builder.CreateLoad
-    (Type::getInt32Ty(context), count106);
+        (Type::getInt32Ty(context), count106);
     //%108 = icmp ne i32 %107, 0
     Value* count108 = builder.CreateICmpNE
        (count107, ConstantInt::get(Type::getInt32Ty(context), 0));
@@ -447,13 +447,13 @@ int main() {
     count8->addIncoming(count72, CBB71);
     count8->addIncoming(count99, CBB98);
     count8->addIncoming(count110, CBB102);
-    count11->addIncoming
+    count20->addIncoming
         (ConstantInt::get(Type::getInt32Ty(context), 0), CBB9);
-    count11->addIncoming(count99, CBB98);
+    count20->addIncoming(count18, CBB11);
     count32->addIncoming(count20, CBB19);
     count32->addIncoming(count30, CBB22);
     count45->addIncoming
-        (ConstantInt::get(Type::getInt32Ty(context), 0), count3);
+        (ConstantInt::get(Type::getInt32Ty(context), 0), CBB0);
     count45->addIncoming(count32, CBB31);
     count45->addIncoming(count43, CBB35);
     count59->addIncoming(count45, CBB47);
@@ -475,8 +475,8 @@ int main() {
     FunctionType* updatePixelFuncType = 
         FunctionType::get(builder.getVoidTy(), {builder.getInt32Ty(), 
                                                 builder.getInt32Ty(),
-                                                builder.getInt32PtrTy(),
-                                                builder.getInt32PtrTy()}, 
+                                                builder.getInt32Ty()->getPointerTo(),
+                                                builder.getInt32Ty()->getPointerTo()}, 
                                                 false);
     Function* updatePixelFunc =
         Function::Create(updatePixelFuncType, Function::ExternalLinkage, 
@@ -532,7 +532,7 @@ int main() {
     Value* update17 = builder.CreateGEP
         (Type::getInt32Ty(context), update3, update8);
     //store i32 %16, ptr %17, align 4
-    builder.CreateStore(update16, update17, false);
+    builder.CreateStore(update16, update17);
     //ret void
     builder.CreateRetVoid();
 //----------------------------------------------------------------
@@ -544,8 +544,8 @@ int main() {
 //------------------------------ swapPixels ------------------------------
     FunctionType* swapPixelsFuncType = 
         FunctionType::get(builder.getVoidTy(), 
-                          {builder.getInt32PtrTy()->getPointerTo(),
-                           builder.getInt32PtrTy()->getPointerTo()}, 
+                          {builder.getInt32Ty()->getPointerTo()->getPointerTo(),
+                           builder.getInt32Ty()->getPointerTo()->getPointerTo()}, 
                           false);
     Function* swapPixelsFunc =
         Function::Create(swapPixelsFuncType, Function::ExternalLinkage, 
@@ -561,16 +561,14 @@ int main() {
     builder.SetInsertPoint(SBB0);
     //%3 = load ptr, ptr %0, align 8, !tbaa !9
     Value* swap3 = builder.CreateLoad
-        (Type::getInt8PtrTy(context), swap0, "", false, 
-         8, nullptr, nullptr, 9);
+        (Type::getInt8Ty(context)->getPointerTo(), swap0);
     //%4 = load ptr, ptr %1, align 8, !tbaa !9
     Value* swap4 = builder.CreateLoad
-        (Type::getInt8PtrTy(context), swap1, "", false, 
-         8, nullptr, nullptr, 9);
+        (Type::getInt8Ty(context)->getPointerTo(), swap1);
     //store ptr %4, ptr %0, align 8, !tbaa !9
-    builder.CreateStore(swap4, swap0, false, 8, nullptr, nullptr, 9);
+    builder.CreateStore(swap4, swap0);
     //store ptr %3, ptr %1, align 8, !tbaa !9
-    builder.CreateStore(swap3, swap1, false, 8, nullptr, nullptr, 9);
+    builder.CreateStore(swap3, swap1);
     //ret void
     builder.CreateRetVoid();
 //----------------------------------------------------------------
@@ -583,8 +581,8 @@ int main() {
 //------------------------------ gameOfLife ------------------------------
     FunctionType* gameOfLifeFuncType = 
         FunctionType::get(builder.getVoidTy(), 
-                          {builder.getInt32PtrTy(),
-                           builder.getInt32PtrTy()}, 
+                          {builder.getInt32Ty()->getPointerTo(),
+                           builder.getInt32Ty()->getPointerTo()}, 
                           false);
     Function* gameOfLifeFunc =
         Function::Create(gameOfLifeFuncType, Function::ExternalLinkage, 
@@ -597,23 +595,24 @@ int main() {
     BasicBlock* GBB0 = BasicBlock::Create(context, "", gameOfLifeFunc);
     BasicBlock* GBB3 = BasicBlock::Create(context, "", gameOfLifeFunc);
     BasicBlock* GBB6 = BasicBlock::Create(context, "", gameOfLifeFunc);
+    BasicBlock* GBB9 = BasicBlock::Create(context, "", gameOfLifeFunc);
     BasicBlock* GBB10 = BasicBlock::Create(context, "", gameOfLifeFunc);
     BasicBlock* GBB13 = BasicBlock::Create(context, "", gameOfLifeFunc);
 
 //------------------------------ %0 ------------------------------
     builder.SetInsertPoint(GBB0);
     //br label %3
-    builder.CreateCondBr(GBB3);
+    builder.CreateBr(GBB3);
 //----------------------------------------------------------------
 
 //------------------------------ %3 ------------------------------
     builder.SetInsertPoint(GBB3);
     //%4 = phi ptr [ %0, %2 ], [ %5, %9 ]
     PHINode* game4 = builder.CreatePHI
-        (Type::getInt8PtrTy(context), 2);
+        (Type::getInt8Ty(context)->getPointerTo() , 2);
     //%5 = phi ptr [ %1, %2 ], [ %4, %9 ]
     PHINode* game5 = builder.CreatePHI
-        (Type::getInt8PtrTy(context), 2);
+        (Type::getInt8Ty(context)->getPointerTo() , 2);
     //br label %6
     builder.CreateBr(GBB6);
 //----------------------------------------------------------------
@@ -659,14 +658,12 @@ int main() {
     Value* game15 = builder.CreateShl
         (game14, ConstantInt::get(Type::getInt64Ty(context), 9));
     //%16 = or disjoint i64 %15, %7
-    Value* game16 = builder.CreateBinOr(game15, game7);
+    Value* game16 = builder.CreateOr(game15, game7);
     //%17 = getelementptr inbounds i32, ptr %4, i64 %16
     Value* game17 = builder.CreateGEP
         (Type::getInt32Ty(context), game4, game16);
     //%18 = load i32, ptr %17, align 4, !tbaa !5
-    Value* game18 = builder.CreateLoad
-        (Type::getInt32Ty(context), game17, "", 
-         false, 4, nullptr, nullptr, 5);
+    Value* game18 = builder.CreateLoad(Type::getInt32Ty(context), game17);
     //%19 = icmp eq i32 %18, 0
     Value* game19 = builder.CreateICmpEQ
         (game18, ConstantInt::get(Type::getInt32Ty(context), 0));
@@ -684,8 +681,7 @@ int main() {
         (countLivingNeighborsFunc, {game8, game21, game4});
     //%23 = load i32, ptr %17, align 4, !tbaa !5
     Value* game23 = builder.CreateLoad
-        (Type::getInt32Ty(context), game17, "", 
-         false, 4, nullptr, nullptr, 5);
+        (Type::getInt32Ty(context), game17);
     //%24 = icmp eq i32 %23, 1
     Value* game24 = builder.CreateICmpEQ
         (game23, ConstantInt::get(Type::getInt32Ty(context), 1));
@@ -706,7 +702,7 @@ int main() {
     Value* game30 = builder.CreateGEP
         (Type::getInt32Ty(context), game5, game16);
     //store i32 %29, ptr %30, align 4
-    builder.CreateStore(game29, game30, false, 4);
+    builder.CreateStore(game29, game30);
     //%31 = add nuw nsw i64 %14, 1
     Value* game31 = builder.CreateAdd
         (game14, ConstantInt::get(Type::getInt64Ty(context), 1), "", 
@@ -718,11 +714,11 @@ int main() {
     builder.CreateCondBr(game32, GBB10, GBB13);
 //----------------------------------------------------------------
 
-    game4->addIncoming(game0, GBB2);
+    game4->addIncoming(game0, GBB0);
     game4->addIncoming(game5, GBB9);
-    game5->addIncoming(game1, GBB2);
+    game5->addIncoming(game1, GBB0);
     game5->addIncoming(game4, GBB9);
-    game7->addIncoming(ConstantInt::get(Type::getInt64Ty(context), 0));
+    game7->addIncoming(ConstantInt::get(Type::getInt64Ty(context), 0), GBB3);
     game7->addIncoming(game11, GBB10);
     game14->addIncoming(ConstantInt::get(Type::getInt64Ty(context), 0), GBB6);
     game14->addIncoming(game31, GBB13);
@@ -734,10 +730,7 @@ int main() {
 
 //------------------------------ app ------------------------------
     FunctionType* appFuncType = 
-        FunctionType::get(builder.getVoidTy(), 
-                          {builder.getInt32PtrTy()->getPointerTo(),
-                           builder.getInt32PtrTy()->getPointerTo()}, 
-                          false);
+        FunctionType::get(builder.getVoidTy(), {}, false);
     Function* appFunc =
         Function::Create(appFuncType, Function::ExternalLinkage, 
                          "app", module);
@@ -757,31 +750,32 @@ int main() {
     //%1 = alloca [512 x [256 x i32]], align 16
     Value* app1 = builder.CreateAlloca
         (ArrayType::get(ArrayType::get(Type::getInt32Ty(context),
-                                       256), 512), 16);
+                                       256), 512));
     //%2 = alloca [512 x [256 x i32]], align 16
     Value* app2 = builder.CreateAlloca
         (ArrayType::get(ArrayType::get(Type::getInt32Ty(context), 
-                                       256), 512), 16);
+                                       256), 512));
     //call void @llvm.lifetime.start.p0(i64 524288, ptr nonnull %1) #6
-    builder.CreateCall(intrinsic::lifetime_start, 
+    //Function* lifetime = Intrinsic::getDeclaration(module, Intrinsic::lifetime_start);
+    /*builder.CreateCall(lifetime, 
         {ConstantInt::get(Type::getInt64Ty(context), 524288),
          app1});
     //call void @llvm.memset.p0.i64(ptr noundef nonnull align 16 dereferenceable(524288) %1, i8 0, i64 524288, i1 false)
-    builder.CreateCall(intrinsic::memset,
+    builder.CreateCall(Intrinsic::getDeclaration(module, Intrinsic::memset),
         {app1,
         ConstantInt::get(Type::getInt8Ty(context), 0),
         ConstantInt::get(Type::getInt64Ty(context), 524288),
         ConstantInt::get(Type::getInt1Ty(context), false)});
     //call void @llvm.lifetime.start.p0(i64 524288, ptr nonnull %2) #6
-    builder.CreateCall(intrinsic::lifetime_start, 
+    builder.CreateCall(Intrinsic::getDeclaration(module, Intrinsic::lifetime_start), 
         {ConstantInt::get(Type::getInt64Ty(context), 524288),
          app2});
     //call void @llvm.memset.p0.i64(ptr noundef nonnull align 16 dereferenceable(524288) %2, i8 0, i64 524288, i1 false)
-    builder.CreateCall(intrinsic::memset,
+    builder.CreateCall(Intrinsic::getDeclaration(module, Intrinsic::memset),
         {app2,
         ConstantInt::get(Type::getInt8Ty(context), 0),
         ConstantInt::get(Type::getInt64Ty(context), 524288),
-        ConstantInt::get(Type::getInt1Ty(context), false)});
+        ConstantInt::get(Type::getInt1Ty(context), false)});*/
     //br label %3
     builder.CreateBr(ABB3);
 //----------------------------------------------------------------
@@ -799,10 +793,10 @@ int main() {
     builder.SetInsertPoint(ABB5);
     //%6 = phi ptr [ %7, %11 ], [ %1, %35 ]
     PHINode* app6 = builder.CreatePHI
-        (Type::getInt8PtrTy(context), 2);
+        (Type::getInt8Ty(context)->getPointerTo() , 2);
     //%7 = phi ptr [ %6, %11 ], [ %2, %35 ]
     PHINode* app7 = builder.CreatePHI
-        (Type::getInt8PtrTy(context), 2);
+        (Type::getInt8Ty(context)->getPointerTo() , 2);
     //br label %8
     builder.CreateBr(ABB8);
 //----------------------------------------------------------------
@@ -930,13 +924,13 @@ int main() {
     Value* app40 = builder.CreateCall(simRandFunc, {});
     //%41 = getelementptr inbounds [512 x [256 x i32]], ptr %1, i64 0, i64 %4, i64 %39
     Value* app41 = builder.CreateGEP
-        (ArrayType::get(Type::getInt32Ty(context), 256), app1, 
+        (ArrayType::get(ArrayType::get(Type::getInt32Ty(context), 256), 512), app1, 
          {ConstantInt::get(Type::getInt64Ty(context), 0), app4, app39});
     //store i32 %40, ptr %41, align 4, !tbaa !5
     builder.CreateStore(app40, app41);
     //%42 = getelementptr inbounds [512 x [256 x i32]], ptr %2, i64 0, i64 %4, i64 %39
     Value* app42 = builder.CreateGEP
-        (ArrayType::get(Type::getInt32Ty(context), 256), app2, 
+        (ArrayType::get(ArrayType::get(Type::getInt32Ty(context), 256), 512), app2, 
          {ConstantInt::get(Type::getInt64Ty(context), 0), app4, app39});
     //store i32 %40, ptr %42, align 4, !tbaa !5
     builder.CreateStore(app40, app42);
