@@ -5,12 +5,12 @@ app:
 label_1:
     mov R2 0
     
-label_9:
     call simRand R3
     and R3 1
     cmp R3 0
     je set_black
 
+set_coloful:
     mov R4 R2
     shl R4 9
     add R4 R1
@@ -26,16 +26,12 @@ put_pixel:
 
     inc R2
     cmp R2 256
-    je label_4
-
-    jmp label_9
+    jne label_9
 
 label_4:
     inc R1
     cmp R1 512
-    je flush
-
-    jmp label_7
+    jne label_7
 
 flush:
     call simFlush
