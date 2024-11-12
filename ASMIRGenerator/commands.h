@@ -14,8 +14,8 @@
 
 using namespace llvm;
 
-const int REG_FILE_SIZE = 8;
-int REG_FILE[REG_FILE_SIZE];
+const int REG_FILE_SIZE = 30;
+int REG_FILE[REG_FILE_SIZE] = {0};
 
 void do_mov(int arg1, int arg2) {
     REG_FILE[arg1] = REG_FILE[arg2];
@@ -57,6 +57,6 @@ void do_callsimRand(int arg1) {
     REG_FILE[arg1] = simRand();
 }
 
-void do_callsimFlush(int arg1) {
+void do_callsimFlush() {
     simFlush();
 }

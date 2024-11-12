@@ -34,7 +34,6 @@ int main(int argc, char *argv[]) {
     std::string arg, arg1, arg2, arg3, arg4;
     std::unordered_map<std::string, BasicBlock *> BBMap;
 
-    outs() << "\n#[FILE]:\nBBs:";
 
     while (input >> name) {
         if (!name.compare("call")) {
@@ -59,7 +58,6 @@ int main(int argc, char *argv[]) {
             continue;
         }
 
-        outs() << name << "\n";
         name = name.substr(0, name.size()-1);
         BBMap[name] = BasicBlock::Create(context, name, mainFunc);
     }
@@ -68,24 +66,6 @@ int main(int argc, char *argv[]) {
 
     Type* voidType = Type::getVoidTy(context);
     Type* int32Type = Type::getInt32Ty(context);
-
-
-
-    ArrayRef<Type*> simPutPixelParamTypes = {int32Type, int32Type, int32Type};
-    FunctionType* simPutPixelType =
-        FunctionType::get(voidType, simPutPixelParamTypes, false);
-    FunctionCallee simPutPixelFunc =
-        module->getOrInsertFunction("simPutPixel", simPutPixelType);
-
-
-    FunctionType* simFlushType = FunctionType::get(voidType, {voidType}, false);
-    FunctionCallee simFlushFunc =
-        module->getOrInsertFunction("simFlush", simFlushType);
-
-    FunctionType* simRandType = FunctionType::get(Type::getInt32Ty(context), {voidType}, false);
-    FunctionCallee simRandFunc =
-        module->getOrInsertFunction("simRand", simRandType);
-
 
 
     // Funcions types
@@ -147,7 +127,6 @@ int main(int argc, char *argv[]) {
     //input >> name;
     while (input >> name) {
         if (!name.compare("mov")) {
-            outs() << "\nmov ";
             
             input >> arg;
             Value* arg1 = builder.getInt32(std::stoi(arg.substr(1)));
@@ -167,7 +146,6 @@ int main(int argc, char *argv[]) {
         }
         
         if (!name.compare("and")) {
-            outs() << "\nand ";
 
             input >> arg;
             Value* arg1 = builder.getInt32(std::stoi(arg.substr(1)));
@@ -181,7 +159,6 @@ int main(int argc, char *argv[]) {
         }
 
         if (!name.compare("cmp")) {
-            outs() << "\ncmp ";
 
             input >> arg;
             Value* arg1 = builder.getInt32(std::stoi(arg.substr(1)));
@@ -195,7 +172,6 @@ int main(int argc, char *argv[]) {
         }
 
         if (!name.compare("shl")) {
-            outs() << "\nshl ";
 
             input >> arg;
             Value* arg1 = builder.getInt32(std::stoi(arg.substr(1)));
@@ -209,7 +185,6 @@ int main(int argc, char *argv[]) {
         }
 
         if (!name.compare("add")) {
-            outs() << "\nadd ";
 
             input >> arg;
             Value* arg1 = builder.getInt32(std::stoi(arg.substr(1)));
@@ -229,7 +204,7 @@ int main(int argc, char *argv[]) {
         }
 
         if (!name.compare("call")) {
-            outs() << "\ncall ";
+
             input >> arg;
 
             if (!arg.compare("simFlush")) {
@@ -297,7 +272,6 @@ int main(int argc, char *argv[]) {
         }
 
         if (!name.compare("inc")) {
-            outs() << "\ninc ";
 
             input >> arg;
             Value* arg1 = builder.getInt32(std::stoi(arg.substr(1)));
@@ -306,10 +280,12 @@ int main(int argc, char *argv[]) {
             builder.CreateCall(do_incFunc, args);
             continue;
         }
+
+        name = name.substr(0, name.size()-1);
+        builder.SetInsertPoint(BBMap[name]);
     }
 
 
-    outs() << "\n#[LLVM IR]:\n";
     module->print(outs(), nullptr);
     outs() << "\n";
     bool verif = verifyFunction(*mainFunc, &outs());
@@ -321,18 +297,42 @@ int main(int argc, char *argv[]) {
 
     ExecutionEngine *ee = EngineBuilder(std::unique_ptr<Module>(module)).create();
     ee->InstallLazyFunctionCreator([=](const std::string &fnName) -> void * {
-    if (fnName == "simFlush") {
-        return reinterpret_cast<void *>(simFlush);
+    if (fnName == "do_mov") {
+        return reinterpret_cast<void *>(do_mov);
     }
-    if (fnName == "simPutPixel") {
-        return reinterpret_cast<void *>(simPutPixel);
+    if (fnName == "do_movconst") {
+        return reinterpret_cast<void *>(do_movconst);
     }
-    if (fnName == "simRand") {
-        return reinterpret_cast<void *>(simRand);
+    if (fnName == "do_and") {
+        return reinterpret_cast<void *>(do_and);
+    }
+    if (fnName == "do_cmp") {
+        return reinterpret_cast<void *>(do_cmp);
+    }
+    if (fnName == "do_shl") {
+        return reinterpret_cast<void *>(do_shl);
+    }
+    if (fnName == "do_add") {
+        return reinterpret_cast<void *>(do_add);
+    }
+    if (fnName == "do_addconst") {
+        return reinterpret_cast<void *>(do_addconst);
+    }
+    if (fnName == "do_inc") {
+        return reinterpret_cast<void *>(do_inc);
+    }
+    if (fnName == "do_callsimPutPixel") {
+        return reinterpret_cast<void *>(do_callsimPutPixel);
+    }
+    if (fnName == "do_callsimRand") {
+        return reinterpret_cast<void *>(do_callsimRand);
+    }
+    if (fnName == "do_callsimFlush") {
+        return reinterpret_cast<void *>(do_callsimFlush);
     }
         return nullptr;
     });
-/*
+
     ee->addGlobalMapping(regFile, (void *)REG_FILE);
     ee->finalizeObject();
 
@@ -343,5 +343,5 @@ int main(int argc, char *argv[]) {
     outs() << "#[Code was run]\n";
 
     simExit();
-    return EXIT_SUCCESS;*/
+    return EXIT_SUCCESS;
 }

@@ -4,7 +4,9 @@ app:
 
 label_1:
     mov R2 0
+    jmp label_9
     
+label_9:
     call simRand R3
     and R3 1
     cmp R3 0
@@ -20,6 +22,7 @@ set_coloful:
 
 set_black:
     mov R4 -16777216
+    jmp put_pixel
 
 put_pixel:
     call simPutPixel R1 R2 R4
@@ -36,6 +39,7 @@ label_4:
 flush:
     call simFlush
     mov R1, 0
-    
+    jmp label_7
+
 label_7:
     jmp label_1
