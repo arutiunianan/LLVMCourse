@@ -1,0 +1,44 @@
+ОниСмотрятНа РеменьГермес() {
+    НаМоихНогахПедали CocoChanel = 1;
+    ЯТаскаю(CocoChanel != 0) {
+        НаМоейПодруге AlexanderWang = "../for_readme/1alb8.png";
+        simGetPic(AlexanderWang);
+        НаМоихНогахПедали RafSimons = 0;
+        ЯТаскаю(RafSimons < 350) {
+            simFlush();
+            RafSimons = RafSimons + 1;
+        }
+
+        НаМоейПодруге Valentino = "../for_readme/2alb8.png";
+        simGetPic(Valentino);
+        НаМоихНогахПедали NikeCortez = 0;
+        ЯТаскаю(NikeCortez < 350) {
+            simFlush();
+            NikeCortez = NikeCortez + 1;
+        }
+
+        НаМоейПодруге Balenciaga = "../for_readme/3alb8.png";
+        simGetPic(Balenciaga);
+        НаМоихНогахПедали Jordan = 0;
+        ЯТаскаю(Jordan < 350) {
+            simFlush();
+            Jordan = Jordan + 1;
+        }
+
+        НаМоейПодруге безразмернаяФутболкаKTZ = "../for_readme/4alb8.png";
+        simGetPic(безразмернаяФутболкаKTZ);
+        НаМоихНогахПедали LV = 0;
+        ЯТаскаю(LV < 350) {
+            simFlush();
+            KTZ = KTZ + 1;
+        }
+
+        НаМоейПодруге HoodByAir = "../for_readme/5alb8.png";
+        simGetPic(HoodByAir);
+        НаМоихНогахПедали DolceGabbana = 0;
+        ЯТаскаю(DolceGabbana < 350) {
+            simFlush();
+            DolceGabbana = DolceGabbana + 1;
+        }
+    }
+}
